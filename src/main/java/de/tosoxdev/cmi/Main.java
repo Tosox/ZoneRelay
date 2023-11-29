@@ -9,6 +9,6 @@ public class Main {
         FlatMacDarkLaf.setup();
 
         MainFrame mainFrame = new MainFrame(Globals.APP_NAME, 800, 600, 0.9f);
-        mainFrame.setVisible();
+        mainFrame.showWindow();
     }
 }
