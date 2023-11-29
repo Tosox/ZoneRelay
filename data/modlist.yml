@@ -1,0 +1,26 @@
+addonList:
+  - id: mcm
+    name: Mod Configuration Menu
+    link: htps://www.moddb.com/mods/stalker-anomaly/addons/anomaly-mod-configuration-menu
+    setup: [
+      '/Anomaly-Mod-Configuration-Menu/gamedata'
+    ]
+  - id: fdda
+    name: Food, Drug and Drink Animations
+    link: https://github.com/Grokitach/anomaly_fdda/archive/refs/heads/main.zip
+    setup: [
+      '/anomaly_fdda-main/gamedata'
+    ]
+dataList:
+  - id: modded_exes
+    link: https://github.com/themrdemonized/STALKER-Anomaly-modded-exes/releases/latest/download/STALKER-Anomaly-modded-exes.zip
+    setup: [
+      '/gamedata',
+      '/db',
+      '/bin'
+    ]
+separatorList:
+  - id: frameworks
+    name: Frameworks
+  - id: animations
+    name: Animations

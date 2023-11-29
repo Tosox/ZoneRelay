@@ -1,0 +1,22 @@
+### Custom ###
+cmi.iml
+.idea/*
+!.idea/runConfigurations/
+!.idea/encodings.xml
+!.idea/misc.xml
+!.idea/vcs.xml
+
+### Java ###
+target/
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### Mac OS ###
+.DS_Store
