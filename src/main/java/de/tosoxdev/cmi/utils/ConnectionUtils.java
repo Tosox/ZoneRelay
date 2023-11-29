@@ -1,7 +1,5 @@
 package de.tosoxdev.cmi.utils;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +12,6 @@ public class ConnectionUtils {
 
     private ConnectionUtils() {}
 
-    @Nullable
     public static URL createUrl(String url) {
         try {
             return new URL(url);
@@ -24,8 +21,7 @@ public class ConnectionUtils {
         }
     }
 
-    @Nullable
-    public static HttpURLConnection createGetConnectionSimple(@NotNull URL url) {
+    public static HttpURLConnection createGetConnectionSimple(URL url) {
         try {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");

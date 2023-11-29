@@ -1,5 +1,4 @@
 ### Custom ###
-cmi.iml
 .idea/*
 !.idea/runConfigurations/
 !.idea/encodings.xml

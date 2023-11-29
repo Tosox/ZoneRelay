@@ -1,7 +1,5 @@
 package de.tosoxdev.cmi.http;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +14,7 @@ public class HttpFileDownload {
 
     private final HttpURLConnection connection;
 
-    public HttpFileDownload(@NotNull HttpURLConnection connection) {
+    public HttpFileDownload(HttpURLConnection connection) {
         this.connection = connection;
     }
 
@@ -28,7 +26,6 @@ public class HttpFileDownload {
         return contentType.startsWith("application/");
     }
 
-    @Nullable
     public String getFilename() {
         String contentDisposition = connection.getHeaderField("Content-Disposition");
         if (contentDisposition == null) {
@@ -45,7 +42,7 @@ public class HttpFileDownload {
         return filenameMatcher.group(1);
     }
 
-    public byte @Nullable [] getContent() {
+    public byte[] getContent() {
         try {
             return connection.getInputStream().readAllBytes();
         } catch (IOException e) {
