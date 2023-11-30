@@ -8,10 +8,7 @@ on:
 
 jobs:
   build:
-    permissions:
-      checks: write
-      contents: read
-      pull-requests: write
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
