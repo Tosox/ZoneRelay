@@ -59,50 +59,78 @@ public class MainFrame extends JFrame {
             JPanel pnlOptions = new JPanel(null);
             {
                 JImagePanel imgLogo = new JImagePanel("./data/assets/logo.png");
-                imgLogo.setBounds(10, 10, 160, 60);
+                imgLogo.setBackground(new Color(0x03, 0x03, 0x03));
+                imgLogo.setBounds(10, 10, 160, 40);
                 pnlOptions.add(imgLogo);
 
                 JLabel lblVersion = new JLabel(String.format("Installer version: %s", Globals.APP_VERSION), SwingConstants.CENTER);
-                lblVersion.setBounds(10, 70, 160, 30);
+                lblVersion.setForeground(new Color(0xC2, 0xC2, 0xC2));
+                lblVersion.setBounds(10, 45, 160, 30);
                 pnlOptions.add(lblVersion);
 
                 JSeparator sepLogo = new JSeparator();
-                sepLogo.setBounds(20, 110, 140, 2);
+                sepLogo.setBounds(20, 90, 140, 2);
                 sepLogo.setForeground(Color.WHITE);
                 pnlOptions.add(sepLogo);
 
                 JButton btnInstall = new JButton("Install");
-                btnInstall.setBounds(10, 130, 160, 80);
-                btnInstall.setContentAreaFilled(false);
+                btnInstall.setBounds(10, 110, 160, 80);
+                btnInstall.setBackground(new Color(0x03, 0x03, 0x03));
                 btnInstall.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
                 btnInstall.addActionListener(a -> mainFrameController.onInstallClick());
                 pnlOptions.add(btnInstall);
 
                 JCheckBox cbxFullInstall = new JCheckBox("Full installation");
-                cbxFullInstall.setBounds(20, 215, 160, 30);
+                cbxFullInstall.setBounds(20, 190, 160, 30);
                 pnlOptions.add(cbxFullInstall);
 
                 JSeparator sepInstall = new JSeparator();
-                sepInstall.setBounds(20, 255, 140, 2);
+                sepInstall.setBounds(20, 235, 140, 2);
                 sepInstall.setForeground(Color.WHITE);
                 pnlOptions.add(sepInstall);
 
                 JButton btnLaunch = new JButton("Launch");
-                btnLaunch.setBounds(10, 275, 160, 80);
-                btnLaunch.setContentAreaFilled(false);
+                btnLaunch.setBounds(10, 255, 160, 80);
+                btnLaunch.setBackground(new Color(0x03, 0x03, 0x03));
                 btnLaunch.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
                 btnLaunch.addActionListener(a -> mainFrameController.onLaunchClick());
                 pnlOptions.add(btnLaunch);
 
+                pnlOptions.setBackground(new Color(0x03, 0x03, 0x03));
                 pnlOptions.setBounds(0, 0, 180, 600);
                 pnlMain.add(pnlOptions);
             }
 
             JPanel pnlOutput = new JPanel(null);
             {
-                JScrollPane scpOutput = new JScrollPane();
+                JTextArea txaOutput = new JTextArea();
+                txaOutput.setBackground(new Color(0x06, 0x06, 0x06));
+                txaOutput.setEditable(false);
+
+                JScrollPane scpOutput = new JScrollPane(txaOutput);
+                scpOutput.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
+                scpOutput.setBounds(10, 10, 580, 480);
                 pnlOutput.add(scpOutput);
 
+                JLabel lblCurrent = new JLabel("Current progress");
+                lblCurrent.setBounds(10, 495, 90, 30);
+                pnlOutput.add(lblCurrent);
+
+                JProgressBar pgbCurrent = new JProgressBar();
+                pgbCurrent.setStringPainted(true);
+                pgbCurrent.setBounds(110, 500, 480, 20);
+                pnlOutput.add(pgbCurrent);
+
+                JLabel lblTotal = new JLabel("Total progress");
+                lblTotal.setBounds(10, 525, 90, 30);
+                pnlOutput.add(lblTotal);
+
+                JProgressBar pgbTotal = new JProgressBar();
+                pgbTotal.setStringPainted(true);
+                pgbTotal.setBounds(110, 530, 480, 20);
+                pnlOutput.add(pgbTotal);
+
+                pnlOutput.setBackground(new Color(0x03, 0x03, 0x03));
                 pnlOutput.setBounds(180, 0, 640, 600);
                 pnlMain.add(pnlOutput);
             }
