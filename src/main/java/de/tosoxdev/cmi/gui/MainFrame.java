@@ -1,6 +1,8 @@
 package de.tosoxdev.cmi.gui;
 
-import de.tosoxdev.cmi.gui.utils.GridBagConstraintsBuilder;
+import de.tosoxdev.cmi.gui.components.JImagePanel;
+import de.tosoxdev.cmi.gui.controllers.MainFrameController;
+import de.tosoxdev.cmi.utils.Globals;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +11,8 @@ import java.awt.*;
  * The {@code MainFrame} class represents the main application window.
  */
 public class MainFrame extends JFrame {
+    private final MainFrameController mainFrameController = new MainFrameController();
+
     /**
      * Constructs a new {@code MainFrame} with the specified arguments.
      * Initializes components and sets default window properties.
@@ -50,30 +54,57 @@ public class MainFrame extends JFrame {
      * Initializes the main components of the main frame.
      */
     private void initializeComponents() {
-        JPanel pnlMain = new JPanel(new GridBagLayout());
+        JPanel pnlMain = new JPanel(null);
         {
-            JPanel pnlOptions = new JPanel();
+            JPanel pnlOptions = new JPanel(null);
             {
-                pnlOptions.setBackground(Color.BLUE);
+                JImagePanel imgLogo = new JImagePanel("./data/assets/logo.png");
+                imgLogo.setBounds(10, 10, 160, 60);
+                pnlOptions.add(imgLogo);
 
-                pnlMain.add(pnlOptions, GridBagConstraintsBuilder.create()
-                        .fill(GridBagConstraints.BOTH)
-                        .gridX(0)
-                        .weightX(1.0)
-                        .weightY(1.0)
-                        .build());
+                JLabel lblVersion = new JLabel(String.format("Installer version: %s", Globals.APP_VERSION), SwingConstants.CENTER);
+                lblVersion.setBounds(10, 70, 160, 30);
+                pnlOptions.add(lblVersion);
+
+                JSeparator sepLogo = new JSeparator();
+                sepLogo.setBounds(20, 110, 140, 2);
+                sepLogo.setForeground(Color.WHITE);
+                pnlOptions.add(sepLogo);
+
+                JButton btnInstall = new JButton("Install");
+                btnInstall.setBounds(10, 130, 160, 80);
+                btnInstall.setContentAreaFilled(false);
+                btnInstall.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
+                btnInstall.addActionListener(a -> mainFrameController.onInstallClick());
+                pnlOptions.add(btnInstall);
+
+                JCheckBox cbxFullInstall = new JCheckBox("Full installation");
+                cbxFullInstall.setBounds(20, 215, 160, 30);
+                pnlOptions.add(cbxFullInstall);
+
+                JSeparator sepInstall = new JSeparator();
+                sepInstall.setBounds(20, 255, 140, 2);
+                sepInstall.setForeground(Color.WHITE);
+                pnlOptions.add(sepInstall);
+
+                JButton btnLaunch = new JButton("Launch");
+                btnLaunch.setBounds(10, 275, 160, 80);
+                btnLaunch.setContentAreaFilled(false);
+                btnLaunch.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
+                btnLaunch.addActionListener(a -> mainFrameController.onLaunchClick());
+                pnlOptions.add(btnLaunch);
+
+                pnlOptions.setBounds(0, 0, 180, 600);
+                pnlMain.add(pnlOptions);
             }
 
-            JPanel pnlOutput = new JPanel();
+            JPanel pnlOutput = new JPanel(null);
             {
-                pnlOutput.setBackground(Color.PINK);
+                JScrollPane scpOutput = new JScrollPane();
+                pnlOutput.add(scpOutput);
 
-                pnlMain.add(pnlOutput, GridBagConstraintsBuilder.create()
-                        .fill(GridBagConstraints.BOTH)
-                        .gridX(1)
-                        .weightX(3.6)
-                        .weightY(1.0)
-                        .build());
+                pnlOutput.setBounds(180, 0, 640, 600);
+                pnlMain.add(pnlOutput);
             }
 
             this.add(pnlMain);
