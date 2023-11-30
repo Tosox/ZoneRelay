@@ -11,6 +11,11 @@ import java.awt.*;
  * The {@code MainFrame} class represents the main application window.
  */
 public class MainFrame extends JFrame {
+    private JCheckBox cbxFullInstall;
+    private JTextArea txaOutput;
+    private JProgressBar pgbCurrent;
+    private JProgressBar pgbTotal;
+
     private final MainFrameController mainFrameController = new MainFrameController();
 
     /**
@@ -37,6 +42,42 @@ public class MainFrame extends JFrame {
      */
     public void showWindow() {
         this.setVisible(true);
+    }
+
+    /**
+     * Returns the {@code cbxFullInstall} checkbox component.
+     *
+     * @return The {@code cbxFullInstall} checkbox component
+     */
+    public JCheckBox getFullInstall() {
+        return cbxFullInstall;
+    }
+
+    /**
+     * Returns the {@code txaOutput} textarea component.
+     *
+     * @return The {@code txaOutput} textarea component
+     */
+    public JTextArea getTextOutput() {
+        return txaOutput;
+    }
+
+    /**
+     * Returns the {@code pgbCurrent} progressbar component.
+     *
+     * @return The {@code pgbCurrent} progressbar component
+     */
+    public JProgressBar getCurrentProgress() {
+        return pgbCurrent;
+    }
+
+    /**
+     * Returns the {@code pgbTotal} progressbar component.
+     *
+     * @return The {@code pgbTotal} progressbar component
+     */
+    public JProgressBar getTotalProgress() {
+        return pgbTotal;
     }
 
     /**
@@ -80,7 +121,7 @@ public class MainFrame extends JFrame {
                 btnInstall.addActionListener(a -> mainFrameController.onInstallClick());
                 pnlOptions.add(btnInstall);
 
-                JCheckBox cbxFullInstall = new JCheckBox("Full installation");
+                cbxFullInstall = new JCheckBox("Full installation");
                 cbxFullInstall.setBounds(20, 190, 160, 30);
                 pnlOptions.add(cbxFullInstall);
 
@@ -103,7 +144,7 @@ public class MainFrame extends JFrame {
 
             JPanel pnlOutput = new JPanel(null);
             {
-                JTextArea txaOutput = new JTextArea();
+                txaOutput = new JTextArea();
                 txaOutput.setBackground(new Color(0x06, 0x06, 0x06));
                 txaOutput.setEditable(false);
 
@@ -116,7 +157,7 @@ public class MainFrame extends JFrame {
                 lblCurrent.setBounds(10, 495, 90, 30);
                 pnlOutput.add(lblCurrent);
 
-                JProgressBar pgbCurrent = new JProgressBar();
+                pgbCurrent = new JProgressBar();
                 pgbCurrent.setStringPainted(true);
                 pgbCurrent.setBounds(110, 500, 480, 20);
                 pnlOutput.add(pgbCurrent);
@@ -125,7 +166,7 @@ public class MainFrame extends JFrame {
                 lblTotal.setBounds(10, 525, 90, 30);
                 pnlOutput.add(lblTotal);
 
-                JProgressBar pgbTotal = new JProgressBar();
+                pgbTotal = new JProgressBar();
                 pgbTotal.setStringPainted(true);
                 pgbTotal.setBounds(110, 530, 480, 20);
                 pnlOutput.add(pgbTotal);
