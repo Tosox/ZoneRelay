@@ -11,12 +11,12 @@ import java.awt.*;
  * The {@code MainFrame} class represents the main application window.
  */
 public class MainFrame extends JFrame {
+    private final MainFrameController mainFrameController = new MainFrameController();
+
     private JCheckBox cbxFullInstall;
     private JTextArea txaOutput;
     private JProgressBar pgbCurrent;
     private JProgressBar pgbTotal;
-
-    private final MainFrameController mainFrameController = new MainFrameController();
 
     /**
      * Constructs a new {@code MainFrame} with the specified arguments.
