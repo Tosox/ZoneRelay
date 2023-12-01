@@ -9,16 +9,14 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 
-import static de.tosoxdev.cmi.localizer.Localizer.translate;
-
 public class ModListParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(ModListParser.class);
 
-    public static ModList parse(String modListPath) {
+    public ModList parse(String modListPath) {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         File modList = new File(modListPath);
         if (!modList.isFile()) {
-            throw new ModListParseException(translate(""));
+            throw new ModListParseException("help");
         }
 
         try {

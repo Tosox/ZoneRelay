@@ -18,15 +18,11 @@ public class Localizer {
 
     private static JSONObject translations;
 
-    public static void setLanguage(Localizer.Language language) {
+    public Localizer(Localizer.Language language) {
         translations = getLocalizationFileContents(language.getLanguageCode());
     }
 
-    public static String translate(String id) {
-        if (translations == null) {
-            throw new RuntimeException("The locale for the localizer is not set or invalid");
-        }
-
+    public String translate(String id) {
         try {
             return translations.getString(id);
         } catch (JSONException e) {
@@ -35,7 +31,7 @@ public class Localizer {
         }
     }
 
-    private static JSONObject getLocalizationFileContents(String langcode) {
+    private JSONObject getLocalizationFileContents(String langcode) {
         try {
             String path = String.format("%s/%s.json", DIR_LOCALES, langcode);
             List<String> lines = Files.readAllLines(Path.of(path));
