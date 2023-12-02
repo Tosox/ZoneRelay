@@ -5,6 +5,8 @@
 !.idea/misc.xml
 !.idea/vcs.xml
 
+logs/
+
 ### Java ###
 target/
 
