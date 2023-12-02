@@ -5,8 +5,10 @@ import de.tosoxdev.cmi.gui.MainFrame;
 import de.tosoxdev.cmi.handler.CrashHandler;
 import de.tosoxdev.cmi.localizer.Localizer;
 import de.tosoxdev.cmi.utils.Globals;
+import de.tosoxdev.cmi.utils.StdOutRedirector;
 
 public class Main {
+    private static final StdOutRedirector STD_OUT_REDIRECTOR = new StdOutRedirector();
     private static final CrashHandler CRASH_HANDLER = new CrashHandler();
     private static final Localizer LOCALIZER = new Localizer(Localizer.Language.EN_US);
 
