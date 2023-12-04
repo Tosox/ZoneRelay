@@ -1,5 +1,6 @@
 package de.tosoxdev.cmi.gui;
 
+import de.tosoxdev.cmi.Main;
 import de.tosoxdev.cmi.gui.components.JImagePanel;
 import de.tosoxdev.cmi.gui.controllers.MainFrameController;
 import de.tosoxdev.cmi.utils.Globals;
@@ -35,6 +36,8 @@ public class MainFrame extends JFrame {
         this.setOpacity(opacity);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Main.getStdOutRedirector().setSwingComponentOutput(txaOutput);
     }
 
     /**

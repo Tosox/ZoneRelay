@@ -1,6 +1,7 @@
 package de.tosoxdev.cmi.utils;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,12 +25,15 @@ public class StdOutRedirector {
 
             System.setOut(new PrintStream(new FileOutputStream(filepath, true)));
             System.setErr(new PrintStream(new FileOutputStream(filepath, true)));
-
-            System.out.println("yo mama gay");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, String.format("Unable to create instantiate the StdOutRedirector: %s", e.getMessage()), "Fatal error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
+    }
+
+    public void setSwingComponentOutput(JTextComponent component) {
+        System.setOut(new PrintStream(new JTextComponentOutputStream(System.out, component)));
+        System.setErr(new PrintStream(new JTextComponentOutputStream(System.err, component)));
     }
 
     public void reset() {
