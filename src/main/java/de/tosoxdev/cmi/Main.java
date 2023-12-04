@@ -19,6 +19,10 @@ public class Main {
         mainFrame.showWindow();
     }
 
+    public static StdOutRedirector getStdOutRedirector() {
+        return STD_OUT_REDIRECTOR;
+    }
+
     public static CrashHandler getCrashHandler() {
         return CRASH_HANDLER;
     }
