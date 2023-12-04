@@ -12,16 +12,15 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 public class StdOutRedirector {
-    private static final String LOGS_PATH = "./logs/";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     public StdOutRedirector() {
         try {
-            Files.createDirectories(Paths.get(LOGS_PATH));
+            Files.createDirectories(Paths.get(Globals.DIR_LOGS));
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             String filename = String.format("%s.log", DATE_FORMAT.format(timestamp));
-            String filepath = Paths.get(LOGS_PATH, filename).toString();
+            String filepath = Paths.get(Globals.DIR_LOGS, filename).toString();
 
             System.setOut(new PrintStream(new FileOutputStream(filepath, true)));
             System.setErr(new PrintStream(new FileOutputStream(filepath, true)));
