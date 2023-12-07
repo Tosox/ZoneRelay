@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.tosoxdev</groupId>
-    <artifactId>cmi</artifactId>
+    <artifactId>ami</artifactId>
     <version>0.1.0</version>
-    <name>Custom Modlist Installer</name>
+    <name>Automated Modlist Installer</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
