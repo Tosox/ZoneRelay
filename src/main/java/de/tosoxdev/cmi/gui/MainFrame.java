@@ -3,16 +3,19 @@ package de.tosoxdev.cmi.gui;
 import de.tosoxdev.cmi.Main;
 import de.tosoxdev.cmi.gui.components.JImagePanel;
 import de.tosoxdev.cmi.gui.controllers.MainFrameController;
+import de.tosoxdev.cmi.gui.utils.ImageUtils;
 import de.tosoxdev.cmi.utils.Globals;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * The {@code MainFrame} class represents the main application window.
  */
 public class MainFrame extends JFrame {
     private final MainFrameController mainFrameController = new MainFrameController();
+    private final BufferedImage logo = ImageUtils.getFromPath(Main.class.getResource("logo.png"));
 
     private JCheckBox cbxFullInstall;
     private JTextArea txaOutput;
@@ -35,6 +38,7 @@ public class MainFrame extends JFrame {
         this.setSize(width, height);
         this.setOpacity(opacity);
         this.setResizable(false);
+        this.setIconImage(logo);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Main.getStdOutRedirector().setSwingComponentOutput(txaOutput);
@@ -102,39 +106,39 @@ public class MainFrame extends JFrame {
         {
             JPanel pnlOptions = new JPanel(null);
             {
-                JImagePanel imgLogo = new JImagePanel("./data/assets/logo.png");
+                JImagePanel imgLogo = new JImagePanel(logo);
                 imgLogo.setBackground(new Color(0x03, 0x03, 0x03));
-                imgLogo.setBounds(10, 10, 160, 40);
+                imgLogo.setBounds(10, 10, 160, 80);
                 pnlOptions.add(imgLogo);
 
                 JLabel lblVersion = new JLabel(String.format("Installer version: %s", Globals.APP_VERSION), SwingConstants.CENTER);
                 lblVersion.setForeground(new Color(0xC2, 0xC2, 0xC2));
-                lblVersion.setBounds(10, 45, 160, 30);
+                lblVersion.setBounds(10, 90, 160, 30);
                 pnlOptions.add(lblVersion);
 
                 JSeparator sepLogo = new JSeparator();
-                sepLogo.setBounds(20, 90, 140, 2);
+                sepLogo.setBounds(20, 115, 140, 2);
                 sepLogo.setForeground(Color.WHITE);
                 pnlOptions.add(sepLogo);
 
                 JButton btnInstall = new JButton("Install");
-                btnInstall.setBounds(10, 110, 160, 80);
+                btnInstall.setBounds(10, 135, 160, 80);
                 btnInstall.setBackground(new Color(0x03, 0x03, 0x03));
                 btnInstall.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
                 btnInstall.addActionListener(a -> mainFrameController.onInstallClick());
                 pnlOptions.add(btnInstall);
 
                 cbxFullInstall = new JCheckBox("Full installation");
-                cbxFullInstall.setBounds(20, 190, 160, 30);
+                cbxFullInstall.setBounds(20, 215, 160, 30);
                 pnlOptions.add(cbxFullInstall);
 
                 JSeparator sepInstall = new JSeparator();
-                sepInstall.setBounds(20, 235, 140, 2);
+                sepInstall.setBounds(20, 260, 140, 2);
                 sepInstall.setForeground(Color.WHITE);
                 pnlOptions.add(sepInstall);
 
                 JButton btnLaunch = new JButton("Launch");
-                btnLaunch.setBounds(10, 255, 160, 80);
+                btnLaunch.setBounds(10, 280, 160, 80);
                 btnLaunch.setBackground(new Color(0x03, 0x03, 0x03));
                 btnLaunch.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
                 btnLaunch.addActionListener(a -> mainFrameController.onLaunchClick());

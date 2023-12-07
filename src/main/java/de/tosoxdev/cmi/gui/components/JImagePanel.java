@@ -1,26 +1,25 @@
 package de.tosoxdev.cmi.gui.components;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class JImagePanel extends JPanel {
-    private BufferedImage image;
+    private final BufferedImage image;
 
-    public JImagePanel(String filepath) {
-        try {
-            image = ImageIO.read(new File(filepath));
-        } catch (IOException e) {
-            image = null;
-        }
+    public JImagePanel(Image image) {
+        this.image = (BufferedImage) image;
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.drawImage(image.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_FAST), 0, 0, this);
+        if (image != null) {
+            g.drawImage(getScaledToBoundsInstance(), 0, 0, this);
+        }
+    }
+
+    private Image getScaledToBoundsInstance() {
+        return image.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT);
     }
 }
