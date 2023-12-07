@@ -1,7 +1,7 @@
 package de.tosoxdev.cmi.http;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.tosoxdev.cmi.Main;
+import de.tosoxdev.cmi.utils.Logger;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class HttpFileDownload {
     private static final Pattern FILENAME_FROM_CONTENT_DISPOSITION = Pattern.compile("filename\\*?=['\"]?(?:UTF-\\d['\"]*)?([^;\"']*)['\"]?;?");
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpFileDownload.class);
+    private static final Logger LOGGER = Main.getLogger();
 
     private final HttpURLConnection connection;
 

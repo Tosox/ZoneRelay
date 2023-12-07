@@ -1,10 +1,10 @@
 package de.tosoxdev.cmi.localizer;
 
+import de.tosoxdev.cmi.Main;
 import de.tosoxdev.cmi.exceptions.InvalidLocaleException;
+import de.tosoxdev.cmi.utils.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +14,7 @@ import java.util.List;
 import static de.tosoxdev.cmi.utils.Globals.DIR_LOCALES;
 
 public class Localizer {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Localizer.class);
+    private static final Logger LOGGER = Main.getLogger();
 
     private static JSONObject translations;
 
@@ -26,7 +26,7 @@ public class Localizer {
         try {
             return translations.getString(id);
         } catch (JSONException e) {
-            LOGGER.warn("No valid translation for '{}'", id);
+            LOGGER.warn("No valid translation for '%s'", id);
             return id;
         }
     }
@@ -38,10 +38,10 @@ public class Localizer {
             String text = String.join("", lines);
             return new JSONObject(text);
         } catch (IOException e) {
-            LOGGER.error("Unable to find localization for '{}'", langcode);
+            LOGGER.error("Unable to find localization for '%s'", langcode);
             throw new InvalidLocaleException(String.format("Unable to find localization for '%s'", langcode));
         } catch (JSONException e) {
-            LOGGER.error("Unable to parse the contents of localization '{}'", langcode);
+            LOGGER.error("Unable to parse the contents of localization '%s'", langcode);
             throw new InvalidLocaleException(String.format("Unable to parse the contents of localization '%s'", langcode));
         }
     }

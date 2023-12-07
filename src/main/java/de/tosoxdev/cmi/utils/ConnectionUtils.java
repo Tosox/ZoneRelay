@@ -1,14 +1,13 @@
 package de.tosoxdev.cmi.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.tosoxdev.cmi.Main;
 
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ConnectionUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionUtils.class);
+    private static final Logger LOGGER = Main.getLogger();
 
     private ConnectionUtils() {}
 
@@ -16,7 +15,7 @@ public class ConnectionUtils {
         try {
             return new URL(url);
         } catch (MalformedURLException e) {
-            LOGGER.warn("Unable to convert {} into a URL object", url);
+            LOGGER.warn("Unable to convert %s into a URL object", url);
             return null;
         }
     }
@@ -27,12 +26,12 @@ public class ConnectionUtils {
             connection.setRequestMethod("GET");
             connection.connect();
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                LOGGER.warn("Couldn't create connection: {} {}", connection.getResponseCode(), connection.getResponseMessage());
+                LOGGER.warn("Couldn't create connection: %d %s", connection.getResponseCode(), connection.getResponseMessage());
                 return null;
             }
             return connection;
         } catch (Exception e) {
-            LOGGER.warn("Couldn't create connection: {}", e.getMessage());
+            LOGGER.warn("Couldn't create connection: %s", e.getMessage());
             return null;
         }
     }
