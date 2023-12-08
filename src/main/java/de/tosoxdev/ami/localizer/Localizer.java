@@ -2,7 +2,7 @@ package de.tosoxdev.ami.localizer;
 
 import de.tosoxdev.ami.Main;
 import de.tosoxdev.ami.exceptions.InvalidLocaleException;
-import de.tosoxdev.ami.utils.Logger;
+import de.tosoxdev.ami.logger.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 

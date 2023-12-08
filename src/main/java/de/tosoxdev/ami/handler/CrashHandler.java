@@ -1,7 +1,7 @@
 package de.tosoxdev.ami.handler;
 
 import de.tosoxdev.ami.Main;
-import de.tosoxdev.ami.utils.Logger;
+import de.tosoxdev.ami.logger.Logger;
 
 import javax.swing.*;
 import java.io.IOException;

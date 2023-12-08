@@ -1,6 +1,7 @@
 package de.tosoxdev.ami.utils;
 
 import de.tosoxdev.ami.Main;
+import de.tosoxdev.ami.logger.Logger;
 
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;

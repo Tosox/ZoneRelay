@@ -1,4 +1,4 @@
-package de.tosoxdev.ami.utils;
+package de.tosoxdev.ami.logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,24 +27,6 @@ public class Logger {
     }
 
     private void log(LogLevel logLevel, String msg, Object... args) {
-        System.out.printf("[%s][%s] %s%s", TIME_FORMATTER.format(new Date()), logLevel.getAnnotation(), String.format(msg, args), System.lineSeparator());
-    }
-
-    public enum LogLevel {
-        DEBUG("DBG"),
-        INFO("INF"),
-        WARNING("WRN"),
-        ERROR("ERR"),
-        CRITICAL("CRT");
-
-        private final String annotation;
-
-        LogLevel(String annotation) {
-            this.annotation = annotation;
-        }
-
-        public String getAnnotation() {
-            return annotation;
-        }
+        System.out.printf("[%s][%s] %s%s", TIME_FORMATTER.format(new Date()), logLevel.getPrefix(), String.format(msg, args), System.lineSeparator());
     }
 }

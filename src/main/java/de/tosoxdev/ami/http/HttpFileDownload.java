@@ -1,7 +1,7 @@
 package de.tosoxdev.ami.http;
 
 import de.tosoxdev.ami.Main;
-import de.tosoxdev.ami.utils.Logger;
+import de.tosoxdev.ami.logger.Logger;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

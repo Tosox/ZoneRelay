@@ -5,7 +5,7 @@ import de.tosoxdev.ami.gui.MainFrame;
 import de.tosoxdev.ami.handler.CrashHandler;
 import de.tosoxdev.ami.localizer.Localizer;
 import de.tosoxdev.ami.utils.Globals;
-import de.tosoxdev.ami.utils.Logger;
+import de.tosoxdev.ami.logger.Logger;
 import de.tosoxdev.ami.utils.StdOutRedirector;
 
 public class Main {
