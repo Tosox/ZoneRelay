@@ -22,10 +22,11 @@ public class StdOutRedirector {
             String filename = String.format("%s.log", DATE_FORMAT.format(timestamp));
             String filepath = Paths.get(Globals.DIR_LOGS, filename).toString();
 
-            System.setOut(new PrintStream(new FileOutputStream(filepath, true)));
-            System.setErr(new PrintStream(new FileOutputStream(filepath, true)));
+            PrintStream printStream = new PrintStream(new FileOutputStream(filepath, true));
+            System.setOut(printStream);
+            System.setErr(printStream);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, String.format("Unable to create instantiate the StdOutRedirector: %s", e.getMessage()), "Fatal error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, String.format("Unable to instantiate the StdOutRedirector: %s", e.getMessage()), "Fatal error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
     }
