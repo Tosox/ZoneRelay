@@ -27,6 +27,9 @@ public class Logger {
     }
 
     private void log(LogLevel logLevel, String msg, Object... args) {
-        System.out.printf("[%s][%s] %s%s", TIME_FORMATTER.format(new Date()), logLevel.getPrefix(), String.format(msg, args), System.lineSeparator());
+        String currentTime = TIME_FORMATTER.format(new Date());
+        String prefix = logLevel.getPrefix();
+        String message = String.format(msg, args);
+        System.out.printf("[%s][%s] %s%s", currentTime, prefix, message, System.lineSeparator());
     }
 }
