@@ -41,7 +41,7 @@ public class MainFrame extends JFrame {
         this.setIconImage(logo);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Main.getStdOutRedirector().setSwingComponentOutput(txaOutput);
+        Main.getLogger().setTextComponent(txaOutput);
     }
 
     /**

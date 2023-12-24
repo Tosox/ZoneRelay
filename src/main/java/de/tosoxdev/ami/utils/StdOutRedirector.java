@@ -1,7 +1,7 @@
 package de.tosoxdev.ami.utils;
 
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
+import de.tosoxdev.ami.Main;
+
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 public class StdOutRedirector {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    public StdOutRedirector() {
+    public static void enable() {
         try {
             Files.createDirectories(Paths.get(Globals.DIR_LOGS));
 
@@ -26,17 +26,11 @@ public class StdOutRedirector {
             System.setOut(printStream);
             System.setErr(printStream);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, String.format("Unable to instantiate the StdOutRedirector: %s", e.getMessage()), "Fatal error", JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
+            Main.getCrashHandler().showErrorDialogAndExit(String.format("Unable to activate the StdOutRedirector: %n%s", e.getMessage()));
         }
     }
 
-    public void setSwingComponentOutput(JTextComponent component) {
-        System.setOut(new PrintStream(new JTextComponentOutputStream(System.out, component)));
-        System.setErr(new PrintStream(new JTextComponentOutputStream(System.err, component)));
-    }
-
-    public void reset() {
+    public static void disable() {
         System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
         System.setErr(new PrintStream(new FileOutputStream(FileDescriptor.err)));
     }

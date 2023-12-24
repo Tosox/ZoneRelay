@@ -1,7 +1,7 @@
 package de.tosoxdev.ami.http;
 
 import de.tosoxdev.ami.Main;
-import de.tosoxdev.ami.logger.Logger;
+import de.tosoxdev.ami.logger.LoggerEx;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class HttpFileDownload {
     private static final Pattern FILENAME_FROM_CONTENT_DISPOSITION = Pattern.compile("filename\\*?=['\"]?(?:UTF-\\d['\"]*)?([^;\"']*)['\"]?;?");
-    private static final Logger LOGGER = Main.getLogger();
+    private final LoggerEx logger = Main.getLogger();
 
     private final HttpURLConnection connection;
 
@@ -29,13 +29,13 @@ public class HttpFileDownload {
     public String getFilename() {
         String contentDisposition = connection.getHeaderField("Content-Disposition");
         if (contentDisposition == null) {
-            LOGGER.warn("Couldn't retrieve filename: 'Content-Disposition' is not available");
+            logger.warn("Couldn't retrieve filename: 'Content-Disposition' is not available");
             return null;
         }
 
         Matcher filenameMatcher = FILENAME_FROM_CONTENT_DISPOSITION.matcher(contentDisposition);
         if (!filenameMatcher.find()) {
-            LOGGER.warn("Couldn't retrieve filename: 'Content-Disposition' doesn't contain a filename");
+            logger.warn("Couldn't retrieve filename: 'Content-Disposition' doesn't contain a filename");
             return null;
         }
 
@@ -46,7 +46,7 @@ public class HttpFileDownload {
         try {
             return connection.getInputStream().readAllBytes();
         } catch (IOException e) {
-            LOGGER.warn("Couldn't retrieve content: {}", e.getMessage());
+            logger.warn("Couldn't retrieve content: {}", e.getMessage());
             return null;
         }
     }

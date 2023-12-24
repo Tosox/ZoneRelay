@@ -1,7 +1,7 @@
 package de.tosoxdev.ami.handler;
 
 import de.tosoxdev.ami.Main;
-import de.tosoxdev.ami.logger.Logger;
+import de.tosoxdev.ami.logger.LoggerEx;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -11,14 +11,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class CrashHandler {
-    private static final Logger LOGGER = Main.getLogger();
     private static final Path CRASH_DATA_PATH = Paths.get("crash.dat");
+    private final LoggerEx logger = Main.getLogger();
 
     public void saveCurrentSection(String section) {
         try {
             Files.writeString(CRASH_DATA_PATH, section, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            LOGGER.warn("An error occurred while trying to save the crash data: %s", e.getMessage());
+            logger.warn("An error occurred while trying to save the crash data: %s", e.getMessage());
         }
     }
 
@@ -32,7 +32,7 @@ public class CrashHandler {
             Files.delete(CRASH_DATA_PATH);
             return section;
         } catch (IOException e) {
-            LOGGER.warn("An error occurred while trying to load the crash data: %s", e.getMessage());
+            logger.warn("An error occurred while trying to load the crash data: %s", e.getMessage());
             return null;
         }
     }

@@ -2,7 +2,7 @@ package de.tosoxdev.ami.localizer;
 
 import de.tosoxdev.ami.Main;
 import de.tosoxdev.ami.exceptions.InvalidLocaleException;
-import de.tosoxdev.ami.logger.Logger;
+import de.tosoxdev.ami.logger.LoggerEx;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,7 +14,7 @@ import java.util.List;
 import static de.tosoxdev.ami.utils.Globals.DIR_LOCALES;
 
 public class Localizer {
-    private static final Logger LOGGER = Main.getLogger();
+    private final LoggerEx logger = Main.getLogger();
 
     private static JSONObject translations;
 
@@ -26,7 +26,7 @@ public class Localizer {
         try {
             return translations.getString(id);
         } catch (JSONException e) {
-            LOGGER.warn("No valid translation for '%s'", id);
+            logger.warn("No valid translation for '%s'", id);
             return id;
         }
     }
@@ -38,10 +38,10 @@ public class Localizer {
             String text = String.join("", lines);
             return new JSONObject(text);
         } catch (IOException e) {
-            LOGGER.error("Unable to find localization for '%s'", langcode);
+            logger.error("Unable to find localization for '%s'", langcode);
             throw new InvalidLocaleException(String.format("Unable to find localization for '%s'", langcode));
         } catch (JSONException e) {
-            LOGGER.error("Unable to parse the contents of localization '%s'", langcode);
+            logger.error("Unable to parse the contents of localization '%s'", langcode);
             throw new InvalidLocaleException(String.format("Unable to parse the contents of localization '%s'", langcode));
         }
     }
