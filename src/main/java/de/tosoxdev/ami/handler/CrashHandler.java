@@ -1,7 +1,7 @@
 package de.tosoxdev.ami.handler;
 
 import de.tosoxdev.ami.Main;
-import de.tosoxdev.ami.logger.LoggerEx;
+import de.tosoxdev.ami.logger.Logger;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 
 public class CrashHandler {
     private static final Path CRASH_DATA_PATH = Paths.get("crash.dat");
-    private final LoggerEx logger = Main.getLogger();
+    private final Logger logger = Main.getLogger();
 
     public void saveCurrentSection(String section) {
         try {

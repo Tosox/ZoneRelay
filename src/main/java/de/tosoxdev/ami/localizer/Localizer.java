@@ -2,7 +2,7 @@ package de.tosoxdev.ami.localizer;
 
 import de.tosoxdev.ami.Main;
 import de.tosoxdev.ami.exceptions.InvalidLocaleException;
-import de.tosoxdev.ami.logger.LoggerEx;
+import de.tosoxdev.ami.logger.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,9 +14,9 @@ import java.util.List;
 import static de.tosoxdev.ami.utils.Globals.DIR_LOCALES;
 
 public class Localizer {
-    private final LoggerEx logger = Main.getLogger();
+    private final Logger logger = Main.getLogger();
 
-    private static JSONObject translations;
+    private final JSONObject translations;
 
     public Localizer(Localizer.Language language) {
         translations = getLocalizationFileContents(language.getLanguageCode());

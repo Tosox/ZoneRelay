@@ -14,6 +14,7 @@ public class ImageUtils {
         try {
             return ImageIO.read(filepath);
         } catch (IOException e) {
+            // TODO: replace error dialog and exit with fallback image
             Main.getCrashHandler().showErrorDialogAndExit(String.format("Unable to find resource '%s'", filepath));
             return null;
         }

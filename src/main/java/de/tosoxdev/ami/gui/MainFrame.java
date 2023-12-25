@@ -4,6 +4,7 @@ import de.tosoxdev.ami.Main;
 import de.tosoxdev.ami.gui.components.JImagePanel;
 import de.tosoxdev.ami.gui.controllers.MainFrameController;
 import de.tosoxdev.ami.gui.utils.ImageUtils;
+import de.tosoxdev.ami.logger.DisplayLogger;
 import de.tosoxdev.ami.utils.Globals;
 
 import javax.swing.*;
@@ -17,8 +18,10 @@ public class MainFrame extends JFrame {
     private final MainFrameController mainFrameController = new MainFrameController();
     private final BufferedImage logo = ImageUtils.getFromPath(Main.class.getResource("logo.png"));
 
+    private final DisplayLogger displayLogger;
+
     private JCheckBox cbxFullInstall;
-    private JTextArea txaOutput;
+    private JTextPane txpOutput;
     private JProgressBar pgbCurrent;
     private JProgressBar pgbTotal;
 
@@ -41,7 +44,7 @@ public class MainFrame extends JFrame {
         this.setIconImage(logo);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Main.getLogger().setTextComponent(txaOutput);
+        displayLogger = new DisplayLogger(txpOutput);
     }
 
     /**
@@ -52,39 +55,62 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Returns the {@code cbxFullInstall} checkbox component.
+     * Returns the {@link de.tosoxdev.ami.logger.DisplayLogger} object.
      *
-     * @return The {@code cbxFullInstall} checkbox component
+     * @return The {@link de.tosoxdev.ami.logger.DisplayLogger} object
      */
-    public JCheckBox getFullInstall() {
-        return cbxFullInstall;
+    public DisplayLogger getDisplayLogger() {
+        return displayLogger;
     }
 
     /**
-     * Returns the {@code txaOutput} textarea component.
+     * Returns the value of the {@code cbxFullInstall} checkbox component.
      *
-     * @return The {@code txaOutput} textarea component
+     * @return The value of the {@code cbxFullInstall} checkbox component
      */
-    public JTextArea getTextOutput() {
-        return txaOutput;
+    public boolean isFullInstall() {
+        return cbxFullInstall.isSelected();
     }
 
     /**
-     * Returns the {@code pgbCurrent} progressbar component.
+     * Returns the value of the {@code txaOutput} textarea component.
      *
-     * @return The {@code pgbCurrent} progressbar component
+     * @return The value of the {@code txaOutput} textarea component
      */
-    public JProgressBar getCurrentProgress() {
-        return pgbCurrent;
+    public String getDisplayText() {
+        return txpOutput.getText();
     }
 
     /**
-     * Returns the {@code pgbTotal} progressbar component.
+     * Returns the value of the {@code pgbCurrent} progressbar component.
      *
-     * @return The {@code pgbTotal} progressbar component
+     * @return The value of the {@code pgbCurrent} progressbar component
      */
-    public JProgressBar getTotalProgress() {
-        return pgbTotal;
+    public int getCurrentProgress() {
+        return pgbCurrent.getValue();
+    }
+
+    /**
+     * Sets the value of the {@code pgbCurrent} progressbar component.
+     */
+    public void setCurrentProgress(int value) {
+        pgbCurrent.setValue(value);
+    }
+
+    /**
+     * Returns the value of the {@code pgbTotal} progressbar component.
+     *
+     * @return The value of the {@code pgbTotal} progressbar component
+     */
+    public int getTotalProgress() {
+        return pgbTotal.getValue();
+    }
+
+    /**
+     * Sets the value of the {@code pgbTotal} progressbar component.
+     */
+    public void setTotalProgress(int value) {
+        pgbTotal.setValue(value);
     }
 
     /**
@@ -151,11 +177,11 @@ public class MainFrame extends JFrame {
 
             JPanel pnlOutput = new JPanel(null);
             {
-                txaOutput = new JTextArea();
-                txaOutput.setBackground(new Color(0x06, 0x06, 0x06));
-                txaOutput.setEditable(false);
+                txpOutput = new JTextPane();
+                txpOutput.setBackground(new Color(0x06, 0x06, 0x06));
+                txpOutput.setEditable(false);
 
-                JScrollPane scpOutput = new JScrollPane(txaOutput);
+                JScrollPane scpOutput = new JScrollPane(txpOutput);
                 scpOutput.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
                 scpOutput.setBounds(10, 10, 580, 480);
                 pnlOutput.add(scpOutput);
