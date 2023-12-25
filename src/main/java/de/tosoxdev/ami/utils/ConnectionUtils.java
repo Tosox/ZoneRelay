@@ -1,6 +1,5 @@
 package de.tosoxdev.ami.utils;
 
-import de.tosoxdev.ami.Main;
 import de.tosoxdev.ami.logger.Logger;
 
 import java.net.HttpURLConnection;
@@ -8,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ConnectionUtils {
-    private static final Logger LOGGER = Main.getLogger();
+    private static final Logger LOGGER = Logger.getInstance();
 
     private ConnectionUtils() {}
 

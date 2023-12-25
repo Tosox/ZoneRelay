@@ -6,6 +6,10 @@ import java.util.Date;
 public class Logger {
     private static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss");
 
+    private static Logger instance;
+
+    private Logger() {}
+
     public void debug(String msg, Object... args) {
         log(LogLevel.DEBUG, msg, args);
     }
@@ -31,5 +35,12 @@ public class Logger {
         String prefix = logLevel.getPrefix();
         String message = String.format(msg, args);
         System.out.printf("[%s][%s] %s%n", currentTime, prefix, message);
+    }
+
+    public static Logger getInstance() {
+        if (instance == null) {
+            instance = new Logger();
+        }
+        return instance;
     }
 }

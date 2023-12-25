@@ -1,9 +1,8 @@
 package de.tosoxdev.ami.gui;
 
-import de.tosoxdev.ami.Main;
 import de.tosoxdev.ami.gui.components.JImagePanel;
 import de.tosoxdev.ami.gui.controllers.MainFrameController;
-import de.tosoxdev.ami.gui.utils.ImageUtils;
+import de.tosoxdev.ami.utils.ImageUtils;
 import de.tosoxdev.ami.logger.DisplayLogger;
 import de.tosoxdev.ami.utils.Globals;
 
@@ -16,7 +15,7 @@ import java.awt.image.BufferedImage;
  */
 public class MainFrame extends JFrame {
     private final MainFrameController mainFrameController = new MainFrameController();
-    private final BufferedImage logo = ImageUtils.getFromPath(Main.class.getResource("logo.png"));
+    private final BufferedImage logo = ImageUtils.getFromPath(getClass().getResource("logo.png"));
 
     private final DisplayLogger displayLogger;
 

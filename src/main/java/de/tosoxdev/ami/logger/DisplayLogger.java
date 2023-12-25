@@ -1,7 +1,5 @@
 package de.tosoxdev.ami.logger;
 
-import de.tosoxdev.ami.Main;
-
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
@@ -9,7 +7,8 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 public class DisplayLogger {
-    private final Logger logger = Main.getLogger();
+    private final Logger logger = Logger.getInstance();
+
     private final JTextPane textPane;
 
     public DisplayLogger(JTextPane textPane) {

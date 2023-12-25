@@ -1,6 +1,6 @@
 package de.tosoxdev.ami.utils;
 
-import de.tosoxdev.ami.Main;
+import de.tosoxdev.ami.handler.CrashHandler;
 
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
@@ -26,7 +26,7 @@ public class StdOutRedirector {
             System.setOut(printStream);
             System.setErr(printStream);
         } catch (IOException e) {
-            Main.getCrashHandler().showErrorDialogAndExit(String.format("Unable to activate the StdOutRedirector: %n%s", e.getMessage()));
+            CrashHandler.showErrorDialogAndExit(String.format("Unable to activate the StdOutRedirector: %n%s", e.getMessage()));
         }
     }
 

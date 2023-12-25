@@ -1,6 +1,5 @@
 package de.tosoxdev.ami.http;
 
-import de.tosoxdev.ami.Main;
 import de.tosoxdev.ami.logger.Logger;
 
 import java.io.IOException;
@@ -10,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class HttpFileDownload {
     private static final Pattern FILENAME_FROM_CONTENT_DISPOSITION = Pattern.compile("filename\\*?=['\"]?(?:UTF-\\d['\"]*)?([^;\"']*)['\"]?;?");
-    private final Logger logger = Main.getLogger();
+    private final Logger logger = Logger.getInstance();
 
     private final HttpURLConnection connection;
 

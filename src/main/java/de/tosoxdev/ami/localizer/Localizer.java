@@ -1,6 +1,5 @@
 package de.tosoxdev.ami.localizer;
 
-import de.tosoxdev.ami.Main;
 import de.tosoxdev.ami.exceptions.InvalidLocaleException;
 import de.tosoxdev.ami.logger.Logger;
 import org.json.JSONException;
@@ -14,7 +13,7 @@ import java.util.List;
 import static de.tosoxdev.ami.utils.Globals.DIR_LOCALES;
 
 public class Localizer {
-    private final Logger logger = Main.getLogger();
+    private final Logger logger = Logger.getInstance();
 
     private final JSONObject translations;
 
@@ -35,8 +34,7 @@ public class Localizer {
         try {
             String path = String.format("%s/%s.json", DIR_LOCALES, langcode);
             List<String> lines = Files.readAllLines(Path.of(path));
-            String text = String.join("", lines);
-            return new JSONObject(text);
+            return new JSONObject(String.join("", lines));
         } catch (IOException e) {
             logger.error("Unable to find localization for '%s'", langcode);
             throw new InvalidLocaleException(String.format("Unable to find localization for '%s'", langcode));
