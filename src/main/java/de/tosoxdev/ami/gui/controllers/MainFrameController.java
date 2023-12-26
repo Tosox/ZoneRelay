@@ -25,6 +25,8 @@ public class MainFrameController {
             logger.warn("Please move the installer into the MO2 directory");
             return;
         }
+
+
     }
 
     public void onLaunchClick() {
