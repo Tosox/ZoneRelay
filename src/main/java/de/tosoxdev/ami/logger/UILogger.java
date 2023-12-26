@@ -6,12 +6,13 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class UIOutputLogger {
+public class UILogger {
     private final Logger logger = Logger.getInstance();
 
-    private final JTextPane textPane;
+    private static UILogger instance;
+    private JTextPane textPane;
 
-    public UIOutputLogger(JTextPane textPane) {
+    public void setTextPane(JTextPane textPane) {
         this.textPane = textPane;
     }
 
@@ -36,6 +37,11 @@ public class UIOutputLogger {
     }
 
     private void log(LogLevel logLevel, String msg, Object... args) {
+        if (textPane == null) {
+            logger.warn("The output component isn't set yet");
+            return;
+        }
+
         StyledDocument document = textPane.getStyledDocument();
         Style style = textPane.addStyle("ColorStyle", null);
         StyleConstants.setForeground(style, logLevel.getColor());
@@ -49,5 +55,12 @@ public class UIOutputLogger {
         }
 
         textPane.setCaretPosition(document.getLength());
+    }
+
+    public static UILogger getInstance() {
+        if (instance == null) {
+            instance = new UILogger();
+        }
+        return instance;
     }
 }

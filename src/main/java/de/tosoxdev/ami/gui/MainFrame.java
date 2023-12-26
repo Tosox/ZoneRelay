@@ -2,9 +2,9 @@ package de.tosoxdev.ami.gui;
 
 import de.tosoxdev.ami.gui.components.JImagePanel;
 import de.tosoxdev.ami.gui.controllers.MainFrameController;
-import de.tosoxdev.ami.utils.ImageUtils;
-import de.tosoxdev.ami.logger.UIOutputLogger;
+import de.tosoxdev.ami.logger.UILogger;
 import de.tosoxdev.ami.utils.Globals;
+import de.tosoxdev.ami.utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +16,6 @@ import java.awt.image.BufferedImage;
 public class MainFrame extends JFrame {
     private static final BufferedImage LOGO = ImageUtils.getFromPath(MainFrame.class.getResource("logo.png"));
     private final MainFrameController mainFrameController = new MainFrameController();
-
-    private final UIOutputLogger displayLogger;
 
     private JCheckBox cbxFullInstall;
     private JTextPane txpOutput;
@@ -43,7 +41,7 @@ public class MainFrame extends JFrame {
         this.setIconImage(LOGO);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        displayLogger = new UIOutputLogger(txpOutput);
+        UILogger.getInstance().setTextPane(txpOutput);
     }
 
     /**
@@ -51,15 +49,6 @@ public class MainFrame extends JFrame {
      */
     public void showWindow() {
         this.setVisible(true);
-    }
-
-    /**
-     * Returns the {@link UIOutputLogger} object.
-     *
-     * @return The {@link UIOutputLogger} object
-     */
-    public UIOutputLogger getDisplayLogger() {
-        return displayLogger;
     }
 
     /**
