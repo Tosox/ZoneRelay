@@ -14,13 +14,23 @@ public class MainFrameController {
     private final UILogger uiLogger = UILogger.getInstance();
 
     public void onInstallClick() {
+        if (Files.notExists(Paths.get(Globals.PATH_MO2_EXE))) {
+            uiLogger.warn("Please move the installer into the MO2 directory");
+            logger.warn("Please move the installer into the MO2 directory");
+            return;
+        }
 
+        if (Files.notExists(Paths.get(Globals.PATH_MO2_CFG))) {
+            uiLogger.warn("Please move the installer into the MO2 directory");
+            logger.warn("Please move the installer into the MO2 directory");
+            return;
+        }
     }
 
     public void onLaunchClick() {
         if (Files.notExists(Paths.get(Globals.PATH_MO2_EXE))) {
-            uiLogger.warn("Unable to launch Mod Organizer 2. %s or MO2 seems to be installed incorrectly", Globals.APP_NAME);
-            logger.warn("Unable to launch Mod Organizer 2. %s or MO2 seems to be installed incorrectly", Globals.APP_NAME);
+            uiLogger.warn("Please move the installer into the MO2 directory");
+            logger.warn("Please move the installer into the MO2 directory");
             return;
         }
 

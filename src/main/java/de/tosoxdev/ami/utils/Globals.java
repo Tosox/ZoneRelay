@@ -9,4 +9,8 @@ public class Globals {
     public static final String DIR_LOGS = "./logs";
 
     public static final String PATH_MO2_EXE = "../ModOrganizer.exe";
+    public static final String PATH_MO2_CFG = "../ModOrganizer.ini";
+
+    public static final String PATH_ADDON_META = "../resources/addon-meta.ini.template.txt";
+    public static final String PATH_SEPARATOR_META = "../resources/separator-meta.ini.template.txt";
 }
