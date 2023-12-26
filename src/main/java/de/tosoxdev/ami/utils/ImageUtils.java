@@ -40,7 +40,7 @@ public class ImageUtils {
         try {
             image = ImageIO.read(resource);
         } catch (IOException e) {
-            CrashHandler.showErrorDialogAndExit(String.format("An exception occurred while trying to read the contents of the fallback image:%n%s", e.getMessage()));
+            CrashHandler.showErrorDialogAndExit("An exception occurred while trying to read the contents of the fallback image:%n%s", e.getMessage());
             return null; // Unreachable
         }
 

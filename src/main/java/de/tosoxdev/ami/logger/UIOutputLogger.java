@@ -6,12 +6,12 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class DisplayLogger {
+public class UIOutputLogger {
     private final Logger logger = Logger.getInstance();
 
     private final JTextPane textPane;
 
-    public DisplayLogger(JTextPane textPane) {
+    public UIOutputLogger(JTextPane textPane) {
         this.textPane = textPane;
     }
 

@@ -1,7 +1,8 @@
 package de.tosoxdev.ami.localizer;
 
-import de.tosoxdev.ami.exceptions.InvalidLocaleException;
+import de.tosoxdev.ami.handler.CrashHandler;
 import de.tosoxdev.ami.logger.Logger;
+import de.tosoxdev.ami.utils.Globals;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,8 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-
-import static de.tosoxdev.ami.utils.Globals.DIR_LOCALES;
 
 public class Localizer {
     private final Logger logger = Logger.getInstance();
@@ -32,15 +31,17 @@ public class Localizer {
 
     private JSONObject getLocalizationFileContents(String langcode) {
         try {
-            String path = String.format("%s/%s.json", DIR_LOCALES, langcode);
+            String path = String.format("%s/%s.json", Globals.DIR_LOCALES, langcode);
             List<String> lines = Files.readAllLines(Path.of(path));
             return new JSONObject(String.join("", lines));
         } catch (IOException e) {
             logger.error("Unable to find localization for '%s'", langcode);
-            throw new InvalidLocaleException(String.format("Unable to find localization for '%s'", langcode));
+            CrashHandler.showErrorDialogAndExit("Unable to find localization for '%s':%n%s", langcode, e.getMessage());
+            return null; // Unreachable
         } catch (JSONException e) {
             logger.error("Unable to parse the contents of localization '%s'", langcode);
-            throw new InvalidLocaleException(String.format("Unable to parse the contents of localization '%s'", langcode));
+            CrashHandler.showErrorDialogAndExit("Unable to parse the contents of localization '%s':%n%s", langcode, e.getMessage());
+            return null; // Unreachable
         }
     }
 

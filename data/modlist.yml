@@ -1,7 +1,7 @@
 addonList:
   - id: mcm
     name: Mod Configuration Menu
-    link: htps://www.moddb.com/mods/stalker-anomaly/addons/anomaly-mod-configuration-menu
+    link: https://www.moddb.com/mods/stalker-anomaly/addons/anomaly-mod-configuration-menu
     setup: [
       '/Anomaly-Mod-Configuration-Menu/gamedata'
     ]

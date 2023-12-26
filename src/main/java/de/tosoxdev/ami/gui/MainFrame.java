@@ -3,7 +3,7 @@ package de.tosoxdev.ami.gui;
 import de.tosoxdev.ami.gui.components.JImagePanel;
 import de.tosoxdev.ami.gui.controllers.MainFrameController;
 import de.tosoxdev.ami.utils.ImageUtils;
-import de.tosoxdev.ami.logger.DisplayLogger;
+import de.tosoxdev.ami.logger.UIOutputLogger;
 import de.tosoxdev.ami.utils.Globals;
 
 import javax.swing.*;
@@ -14,10 +14,10 @@ import java.awt.image.BufferedImage;
  * The {@code MainFrame} class represents the main application window.
  */
 public class MainFrame extends JFrame {
+    private static final BufferedImage LOGO = ImageUtils.getFromPath(MainFrame.class.getResource("logo.png"));
     private final MainFrameController mainFrameController = new MainFrameController();
-    private final BufferedImage logo = ImageUtils.getFromPath(getClass().getResource("logo.png"));
 
-    private final DisplayLogger displayLogger;
+    private final UIOutputLogger displayLogger;
 
     private JCheckBox cbxFullInstall;
     private JTextPane txpOutput;
@@ -40,10 +40,10 @@ public class MainFrame extends JFrame {
         this.setSize(width, height);
         this.setOpacity(opacity);
         this.setResizable(false);
-        this.setIconImage(logo);
+        this.setIconImage(LOGO);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        displayLogger = new DisplayLogger(txpOutput);
+        displayLogger = new UIOutputLogger(txpOutput);
     }
 
     /**
@@ -54,11 +54,11 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Returns the {@link de.tosoxdev.ami.logger.DisplayLogger} object.
+     * Returns the {@link UIOutputLogger} object.
      *
-     * @return The {@link de.tosoxdev.ami.logger.DisplayLogger} object
+     * @return The {@link UIOutputLogger} object
      */
-    public DisplayLogger getDisplayLogger() {
+    public UIOutputLogger getDisplayLogger() {
         return displayLogger;
     }
 
@@ -131,7 +131,7 @@ public class MainFrame extends JFrame {
         {
             JPanel pnlOptions = new JPanel(null);
             {
-                JImagePanel imgLogo = new JImagePanel(logo);
+                JImagePanel imgLogo = new JImagePanel(LOGO);
                 imgLogo.setBackground(new Color(0x03, 0x03, 0x03));
                 imgLogo.setBounds(10, 10, 160, 80);
                 pnlOptions.add(imgLogo);
