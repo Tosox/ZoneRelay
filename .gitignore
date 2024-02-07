@@ -1,14 +1,10 @@
 ### Custom ###
 .idea/*
-!.idea/runConfigurations/
-!.idea/encodings.xml
-!.idea/misc.xml
-!.idea/vcs.xml
-
 logs/
 
 ### Java ###
 target/
+out/
 
 ### Eclipse ###
 .apt_generated
