@@ -33,6 +33,7 @@ jobs:
           filename: 'Automated-Modlist-Installer-v${{ github.event.inputs.build-ver }}.zip'
           path: 'release/'
       - name: Create release
+        id: create_release
         uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
