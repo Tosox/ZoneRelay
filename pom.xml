@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.tosox</groupId>
-    <artifactId>ami</artifactId>
+    <artifactId>automated-modlist-installer</artifactId>
     <version>0.1.0</version>
     <name>Automated Modlist Installer</name>
 
@@ -79,7 +79,7 @@
                         </goals>
                         <configuration>
                             <headerType>gui</headerType>
-                            <jar>target/ami-${project.version}.jar</jar>
+                            <jar>target/${project.artifactId}-${project.version}.jar</jar>
                             <outfile>target/Automated-Modlist-Installer-${project.version}.exe</outfile>
                             <dontWrapJar>false</dontWrapJar>
                             <classPath>
