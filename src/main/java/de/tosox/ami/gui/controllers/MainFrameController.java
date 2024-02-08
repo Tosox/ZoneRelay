@@ -4,6 +4,7 @@ import de.tosox.ami.Main;
 import de.tosox.ami.localizer.Localizer;
 import de.tosox.ami.logger.Logger;
 import de.tosox.ami.logger.UILogger;
+import de.tosox.ami.manager.InstallationManager;
 import de.tosox.ami.utils.Globals;
 
 import java.io.File;
@@ -15,6 +16,8 @@ public class MainFrameController {
     private final Logger logger = Logger.getInstance();
     private final UILogger uiLogger = UILogger.getInstance();
     private final Localizer localizer = Main.getLocalizer();
+
+    private final InstallationManager installationManager = new InstallationManager();
 
     public void onInstallClick() {
         if (Files.notExists(Paths.get(Globals.PATH_MO2_EXE))) {
@@ -29,7 +32,13 @@ public class MainFrameController {
             return;
         }
 
+        if (installationManager.isInstalling()) {
+            uiLogger.warn(localizer.translate("err_already_installing"));
+            logger.warn("An installation is currently already running");
+            return;
+        }
 
+        installationManager.startInstallation(Main.getMainFrame().isFullInstall());
     }
 
     public void onLaunchClick() {
