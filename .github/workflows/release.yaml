@@ -9,10 +9,9 @@ on:
         default: 'v0.0.0'
 jobs:
   release:
+    permissions: write-all
     runs-on: ubuntu-latest
     if: ${{ github.ref_name == 'master' }}
-    permissions:
-      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
