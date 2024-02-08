@@ -16,5 +16,10 @@ jobs:
           workflow: maven.yaml
           workflow_conclusion: success
           name: automated-modlist-installer
+          path: artifact
+      - name: Copy executable
+        run: mkdir release && cp artifact/*.exe release
+      - name: Copy resources
+        run: cp data/ release && cp locales/ release && cp resources/ release
       - name: Display structure of downloaded files
-        run: ls -R
+        run: ls -R release/
