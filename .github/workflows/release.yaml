@@ -48,6 +48,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./Automated-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
+          asset_path: ./release/Automated-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
           asset_name: Automated-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
           asset_content_type: application/zip
