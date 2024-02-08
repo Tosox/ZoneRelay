@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       build-ver:
-        description: 'Build version'
+        description: Build version
         required: true
-        default: 'v0.0.0'
+        default: v0.0.0
 jobs:
   release:
     permissions: write-all
@@ -29,9 +29,9 @@ jobs:
       - name: Archive
         uses: thedoctor0/zip-release@0.7.6
         with:
-          type: 'zip'
-          filename: 'Automated-Modlist-Installer-v${{ github.event.inputs.build-ver }}.zip'
-          path: 'release/'
+          type: zip
+          filename: Automated-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
+          directory: release/
       - name: Create release
         id: create_release
         uses: actions/create-release@latest
@@ -39,8 +39,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.build-ver }}
-          release_name: 'Automated Modlist Installer ${{ github.event.inputs.build-ver }}'
-          body_path: './CHANGELOG.md'
+          release_name: Automated Modlist Installer ${{ github.event.inputs.build-ver }}
+          body_path: ./CHANGELOG.md
           prerelease: false
       - name: Upload Archive
         uses: actions/upload-release-asset@v1
@@ -48,6 +48,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: './Automated-Modlist-Installer-v${{ github.event.inputs.build-ver }}.zip'
-          asset_name: 'Automated-Modlist-Installer-v${{ github.event.inputs.build-ver }}.zip'
+          asset_path: ./Automated-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
+          asset_name: Automated-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
           asset_content_type: application/zip
