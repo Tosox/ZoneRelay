@@ -69,6 +69,7 @@
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
+                <version>2.5.0</version>
                 <executions>
                     <execution>
                         <id>l4j-clui</id>
@@ -85,11 +86,9 @@
                                 <mainClass>de.tosox.ami.Main</mainClass>
                             </classPath>
                             <jre>
-                                <bundledJre64Bit>false</bundledJre64Bit>
-                                <bundledJreAsFallback>false</bundledJreAsFallback>
+                                <requiresJdk>true</requiresJdk>
+                                <requires64Bit>true</requires64Bit>
                                 <minVersion>17.0.0</minVersion>
-                                <jdkPreference>preferJre</jdkPreference>
-                                <runtimeBits>32</runtimeBits>
                             </jre>
                             <versionInfo>
                                 <fileVersion>${project.version}.0</fileVersion>
