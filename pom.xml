@@ -80,7 +80,7 @@
                         <configuration>
                             <headerType>gui</headerType>
                             <jar>target/${project.artifactId}-${project.version}.jar</jar>
-                            <outfile>target/Automated-Modlist-Installer-${project.version}.exe</outfile>
+                            <outfile>target/Automated-Modlist-Installer-v${project.version}.exe</outfile>
                             <dontWrapJar>false</dontWrapJar>
                             <classPath>
                                 <mainClass>de.tosox.ami.Main</mainClass>
@@ -97,7 +97,7 @@
                                 <productVersion>${project.version}.0</productVersion>
                                 <productName>${project.name}</productName>
                                 <companyName>Tosox</companyName>
-                                <originalFilename>Automated-Modlist-Installer-${project.version}.exe</originalFilename>
+                                <originalFilename>Automated-Modlist-Installer-v${project.version}.exe</originalFilename>
                             </versionInfo>
                         </configuration>
                     </execution>
