@@ -1,12 +1,18 @@
-name: Manual Release
+name: CI Release
 
 on:
   workflow_dispatch:
-
+    inputs:
+      build-ver:
+        description: 'Build version'
+        required: true
+        default: 'v0.0.0'
 jobs:
-  pack:
-    permissions: write-all
+  release:
     runs-on: ubuntu-latest
+    if: ${{ github.ref_name == 'master' }}
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,5 +27,27 @@ jobs:
         run: mkdir release && cp -p artifact/*.exe release
       - name: Copy resources
         run: cp -a data/ release && cp -a locales/ release && cp -a resources/ release
-      - name: Display structure of downloaded files
-        run: ls -R release/
+      - name: Archive
+        uses: thedoctor0/zip-release@0.7.6
+        with:
+          type: 'zip'
+          filename: 'Automated-Modlist-Installer-v${{ github.event.inputs.build-ver }}.zip'
+          path: 'release/'
+      - name: Create release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.build-ver }}
+          release_name: 'Automated Modlist Installer ${{ github.event.inputs.build-ver }}'
+          body_path: './CHANGELOG.md'
+          prerelease: false
+      - name: Upload Archive
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: './Automated-Modlist-Installer-v${{ github.event.inputs.build-ver }}.zip'
+          asset_name: 'Automated-Modlist-Installer-v${{ github.event.inputs.build-ver }}.zip'
+          asset_content_type: application/zip
