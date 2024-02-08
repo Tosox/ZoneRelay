@@ -13,5 +13,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: automated-modlist-installer
+          github-token: ${{ secrets.GH_PAT }}
+          run-id: 7829083020
       - name: Display structure of downloaded files
         run: ls -R
