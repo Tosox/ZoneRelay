@@ -12,7 +12,7 @@ jobs:
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: maven.yaml
           workflow_conclusion: success
           name: automated-modlist-installer
