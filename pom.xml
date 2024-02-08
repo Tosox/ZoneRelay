@@ -90,6 +90,7 @@
                                 <requires64Bit>true</requires64Bit>
                                 <minVersion>17.0.0</minVersion>
                             </jre>
+                            <icon>src/main/resources/logo.ico</icon>
                             <versionInfo>
                                 <fileVersion>${project.version}.0</fileVersion>
                                 <fileDescription>${project.name}</fileDescription>
