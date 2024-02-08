@@ -1,10 +1,12 @@
 package de.tosox.ami.gui;
 
+import de.tosox.ami.Main;
+import de.tosox.ami.gui.components.JImagePanel;
+import de.tosox.ami.gui.controllers.MainFrameController;
+import de.tosox.ami.localizer.Localizer;
 import de.tosox.ami.logger.UILogger;
 import de.tosox.ami.utils.Globals;
 import de.tosox.ami.utils.ImageUtils;
-import de.tosox.ami.gui.components.JImagePanel;
-import de.tosox.ami.gui.controllers.MainFrameController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +18,7 @@ import java.awt.image.BufferedImage;
 public class MainFrame extends JFrame {
     private static final BufferedImage LOGO = ImageUtils.getFromPath(MainFrame.class.getResource("logo.png"));
     private final MainFrameController mainFrameController = new MainFrameController();
+    private final Localizer localizer = Main.getLocalizer();
 
     private JCheckBox cbxFullInstall;
     private JTextPane txpOutput;
@@ -125,7 +128,7 @@ public class MainFrame extends JFrame {
                 imgLogo.setBounds(10, 10, 160, 80);
                 pnlOptions.add(imgLogo);
 
-                JLabel lblVersion = new JLabel(String.format("Installer version: %s", Globals.APP_VERSION), SwingConstants.CENTER);
+                JLabel lblVersion = new JLabel(localizer.translate("gui_installer_version", Globals.APP_VERSION), SwingConstants.CENTER);
                 lblVersion.setForeground(new Color(0xC2, 0xC2, 0xC2));
                 lblVersion.setBounds(10, 90, 160, 30);
                 pnlOptions.add(lblVersion);
@@ -135,14 +138,14 @@ public class MainFrame extends JFrame {
                 sepLogo.setForeground(Color.WHITE);
                 pnlOptions.add(sepLogo);
 
-                JButton btnInstall = new JButton("Install");
+                JButton btnInstall = new JButton(localizer.translate("gui_install"));
                 btnInstall.setBounds(10, 135, 160, 80);
                 btnInstall.setBackground(new Color(0x03, 0x03, 0x03));
                 btnInstall.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
                 btnInstall.addActionListener(a -> mainFrameController.onInstallClick());
                 pnlOptions.add(btnInstall);
 
-                cbxFullInstall = new JCheckBox("Full installation");
+                cbxFullInstall = new JCheckBox(localizer.translate("gui_full_installation"));
                 cbxFullInstall.setBounds(20, 215, 160, 30);
                 pnlOptions.add(cbxFullInstall);
 
@@ -151,7 +154,7 @@ public class MainFrame extends JFrame {
                 sepInstall.setForeground(Color.WHITE);
                 pnlOptions.add(sepInstall);
 
-                JButton btnLaunch = new JButton("Launch");
+                JButton btnLaunch = new JButton(localizer.translate("gui_launch_mo2"));
                 btnLaunch.setBounds(10, 280, 160, 80);
                 btnLaunch.setBackground(new Color(0x03, 0x03, 0x03));
                 btnLaunch.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
@@ -174,7 +177,7 @@ public class MainFrame extends JFrame {
                 scpOutput.setBounds(10, 10, 580, 480);
                 pnlOutput.add(scpOutput);
 
-                JLabel lblCurrent = new JLabel("Current progress");
+                JLabel lblCurrent = new JLabel(localizer.translate("gui_current_progress"));
                 lblCurrent.setBounds(10, 495, 90, 30);
                 pnlOutput.add(lblCurrent);
 
@@ -183,7 +186,7 @@ public class MainFrame extends JFrame {
                 pgbCurrent.setBounds(110, 500, 480, 20);
                 pnlOutput.add(pgbCurrent);
 
-                JLabel lblTotal = new JLabel("Total progress");
+                JLabel lblTotal = new JLabel(localizer.translate("gui_total_progress"));
                 lblTotal.setBounds(10, 525, 90, 30);
                 pnlOutput.add(lblTotal);
 
