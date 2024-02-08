@@ -18,8 +18,8 @@ jobs:
           name: automated-modlist-installer
           path: artifact
       - name: Copy executable
-        run: mkdir release && cp artifact/*.exe release
+        run: mkdir release && cp -p artifact/*.exe release
       - name: Copy resources
-        run: cp data/ release && cp locales/ release && cp resources/ release
+        run: cp -a data/ release && cp -a locales/ release && cp -a resources/ release
       - name: Display structure of downloaded files
         run: ls -R release/
