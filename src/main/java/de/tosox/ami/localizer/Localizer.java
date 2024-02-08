@@ -1,14 +1,15 @@
 package de.tosox.ami.localizer;
 
+import de.tosox.ami.handler.CrashHandler;
 import de.tosox.ami.logger.Logger;
 import de.tosox.ami.utils.Globals;
-import de.tosox.ami.handler.CrashHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 
 public class Localizer {
@@ -20,11 +21,14 @@ public class Localizer {
         translations = getLocalizationFileContents(language.getLanguageCode());
     }
 
-    public String translate(String id) {
+    public String translate(String id, Object... args) {
         try {
-            return translations.getString(id);
+            return String.format(translations.getString(id), args);
         } catch (JSONException e) {
             logger.warn("No valid translation for '%s'", id);
+            return id;
+        } catch (IllegalArgumentException e) {
+            logger.warn("Unable to format string for '%s' with '%s'", id, Arrays.toString(args));
             return id;
         }
     }
@@ -46,8 +50,7 @@ public class Localizer {
     }
 
     public enum Language {
-        EN_US("en-US"),
-        DE_DE("de-DE");
+        EN_US("en-US");
 
         private final String languageCode;
 
