@@ -44,7 +44,11 @@ public class MainFrame extends JFrame {
         this.setIconImage(LOGO);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        UILogger.getInstance().setTextPane(txpOutput);
+        UILogger uiLogger = UILogger.getInstance();
+        uiLogger.setTextPane(txpOutput);
+
+        uiLogger.info(localizer.translate("msg_welcome_message"));
+        uiLogger.info("\n-------------------------------------------------------------------------------------------------------\n");
     }
 
     /**

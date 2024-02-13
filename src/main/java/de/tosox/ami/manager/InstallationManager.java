@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class InstallationManager {
     private final UILogger uiLogger = UILogger.getInstance();
@@ -61,6 +62,37 @@ public class InstallationManager {
                 } catch (IOException e) {
                     // TODO: logger warning
                 }
+            });
+
+            uiLogger.info("\n=================================================================");
+            uiLogger.info(localizer.translate("msg_installing_addons"));
+            uiLogger.info("=================================================================");
+            modList.getAddonList().forEach(addon -> {
+                String addonUrl = addon.getLink();
+                String addonName = addon.getName();
+                List<String> addonSetup = addon.getSetup();
+                String folderPath = Globals.DIR_MO2_MODS + "/" + addonName;
+
+                uiLogger.info(localizer.translate("msg_title_addon", addonName));
+                logger.info("Creating addon: %s", addonName);
+
+                try {
+                    Files.createDirectories(Paths.get(folderPath));
+                    generateMetadata(folderPath, SEPARATOR_META);
+                } catch (IOException e) {
+                    // TODO: logger warning
+                }
+            });
+
+            uiLogger.info("\n=================================================================");
+            uiLogger.info(localizer.translate("msg_installing_data"));
+            uiLogger.info("=================================================================");
+            modList.getDataList().forEach(data -> {
+                String dataUrl = data.getLink();
+                List<String> dataSetup = data.getSetup();
+
+                // uiLogger.info(localizer.translate("msg_title_addon", addonName));
+                // logger.info("Creating data: %s", addonName);
             });
 
             isInstalling = false;

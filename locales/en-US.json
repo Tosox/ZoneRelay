@@ -6,11 +6,13 @@
   "gui_current_progress": "Current progress",
   "gui_total_progress": "Total progress",
 
+  "msg_welcome_message": "Welcome to the Automated Modlist Installer",
   "msg_read_mod-list_cfg": "Reading mod list configuration",
   "msg_create_separators": "    Creating separators",
   "msg_installing_addons": "    Installing addons",
   "msg_installing_data": "    Installing data",
   "msg_title_separator": "\n_______________ %s separator _______________",
+  "msg_title_addon": "\n_______________ %s _______________",
   "msg_create_separator": "    Creating separator in %s",
   "msg_generate_meta": "    Generating meta.ini file",
 
