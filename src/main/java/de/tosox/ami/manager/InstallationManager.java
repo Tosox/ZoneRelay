@@ -78,10 +78,12 @@ public class InstallationManager {
 
                 try {
                     Files.createDirectories(Paths.get(folderPath));
-                    generateMetadata(folderPath, SEPARATOR_META);
+                    generateMetadata(folderPath, ADDON_META);
                 } catch (IOException e) {
                     // TODO: logger warning
                 }
+
+
             });
 
             uiLogger.info("\n=================================================================");
