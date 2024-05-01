@@ -20,7 +20,7 @@ jobs:
         with:
           workflow: maven.yaml
           workflow_conclusion: success
-          name: automated-modlist-installer
+          name: stalker-modlist-installer
           path: artifact
       - name: Copy executable
         run: mkdir release && cp -p artifact/*.exe release
@@ -30,7 +30,7 @@ jobs:
         uses: thedoctor0/zip-release@0.7.6
         with:
           type: zip
-          filename: Automated-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
+          filename: STALKER-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
           directory: release/
       - name: Create release
         id: create_release
@@ -39,7 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.build-ver }}
-          release_name: Automated Modlist Installer ${{ github.event.inputs.build-ver }}
+          release_name: S.T.A.L.K.E.R. Modlist Installer ${{ github.event.inputs.build-ver }}
           body_path: ./CHANGELOG.md
           prerelease: false
       - name: Upload Archive
@@ -48,6 +48,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/Automated-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
-          asset_name: Automated-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
+          asset_path: ./release/STALKER-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
+          asset_name: STALKER-Modlist-Installer-${{ github.event.inputs.build-ver }}.zip
           asset_content_type: application/zip
