@@ -7,7 +7,7 @@
   "gui_total_progress": "Total progress",
 
   "msg_welcome_message": "Welcome to the S.T.A.L.K.E.R. Modlist Installer",
-  "msg_read_mod-list_cfg": "Reading mod list configuration",
+  "msg_read_modlist_cfg": "Reading mod list configuration",
   "msg_create_separators": "    Creating separators",
   "msg_installing_addons": "    Installing addons",
   "msg_installing_data": "    Installing data",
@@ -20,6 +20,6 @@
   "err_launch_mo2_fail": "An error occurred while trying to run MO2",
   "err_launch_mo2": "Please launch MO2 once first",
   "err_already_installing": "An installation is currently already running",
-  "err_missing_mod-list_cfg": "Unable to locate the mod-list configuration file",
-  "err_mod-list_cfg_parse_error": "The mod-list configuration file seems to be malformed"
+  "err_missing_modlist_cfg": "Unable to locate the mod-list configuration file",
+  "err_modlist_cfg_parse_error": "The mod-list configuration file seems to be malformed"
 }

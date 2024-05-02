@@ -37,7 +37,7 @@ public class InstallationManager {
     public void startInstallation(boolean fullInstallation) {
         isInstalling = true;
         new Thread(() -> {
-            uiLogger.info(localizer.translate("msg_read_mod-list_cfg"));
+            uiLogger.info(localizer.translate("msg_read_modlist_cfg"));
             ModList modList = ModListParser.parse(Globals.PATH_MOD_LIST_CFG);
             if (modList == null) {
                 isInstalling = false;
