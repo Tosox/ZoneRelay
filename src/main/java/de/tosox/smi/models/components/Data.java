@@ -1,11 +1,12 @@
-package de.tosox.smi.models;
+package de.tosox.smi.models.components;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.tosox.smi.models.components.generic.AbstractComponent;
 
 import java.util.List;
 
-public class Data extends ModListItem {
+public class Data extends AbstractComponent {
     private final String link;
     private final List<String> setup;
 

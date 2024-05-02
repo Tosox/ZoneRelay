@@ -6,7 +6,10 @@ import de.tosox.smi.handler.ModListParser;
 import de.tosox.smi.localizer.Localizer;
 import de.tosox.smi.logger.Logger;
 import de.tosox.smi.logger.UILogger;
+import de.tosox.smi.models.components.Addon;
+import de.tosox.smi.models.components.Data;
 import de.tosox.smi.models.ModList;
+import de.tosox.smi.models.components.Separator;
 import de.tosox.smi.utils.Globals;
 
 import java.io.IOException;
@@ -47,7 +50,7 @@ public class InstallationManager {
             uiLogger.info("\n=================================================================");
             uiLogger.info(localizer.translate("msg_create_separators"));
             uiLogger.info("=================================================================");
-            modList.getSeparatorList().forEach(separator -> {
+            for (Separator separator : modList.getSeparatorList()) {
                 String separatorName = separator.getName();
                 String folderName = separatorName + "_separator";
                 String folderPath = Globals.DIR_MO2_MODS + "/" + folderName;
@@ -62,12 +65,12 @@ public class InstallationManager {
                 } catch (IOException e) {
                     // TODO: logger warning
                 }
-            });
+            }
 
             uiLogger.info("\n=================================================================");
             uiLogger.info(localizer.translate("msg_installing_addons"));
             uiLogger.info("=================================================================");
-            modList.getAddonList().forEach(addon -> {
+            for (Addon addon : modList.getAddonList()) {
                 String addonUrl = addon.getLink();
                 String addonName = addon.getName();
                 List<String> addonSetup = addon.getSetup();
@@ -84,18 +87,18 @@ public class InstallationManager {
                 }
 
 
-            });
+            };
 
             uiLogger.info("\n=================================================================");
             uiLogger.info(localizer.translate("msg_installing_data"));
             uiLogger.info("=================================================================");
-            modList.getDataList().forEach(data -> {
+            for (Data data : modList.getDataList()) {
                 String dataUrl = data.getLink();
                 List<String> dataSetup = data.getSetup();
 
                 // uiLogger.info(localizer.translate("msg_title_addon", addonName));
                 // logger.info("Creating data: %s", addonName);
-            });
+            };
 
             isInstalling = false;
         }).start();

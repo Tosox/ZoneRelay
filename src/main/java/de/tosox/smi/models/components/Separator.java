@@ -1,9 +1,10 @@
-package de.tosox.smi.models;
+package de.tosox.smi.models.components;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.tosox.smi.models.components.generic.AbstractComponent;
 
-public class Separator extends ModListItem {
+public class Separator extends AbstractComponent {
     private final String name;
 
     @JsonCreator

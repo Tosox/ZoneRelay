@@ -2,6 +2,9 @@ package de.tosox.smi.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.tosox.smi.models.components.Addon;
+import de.tosox.smi.models.components.Data;
+import de.tosox.smi.models.components.Separator;
 
 import java.util.List;
 
