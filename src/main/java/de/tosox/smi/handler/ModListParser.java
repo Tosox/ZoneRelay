@@ -21,7 +21,7 @@ public class ModListParser {
     public static ModList parse(String modListPath) {
         File modList = new File(modListPath);
         if (!modList.isFile()) {
-            uiLogger.warn(localizer.translate("err_missing_mod-list_cfg"));
+            uiLogger.warn(localizer.translate("err_missing_modlist_cfg"));
             logger.warn("Unable to locate the mod-list configuration file");
             return null;
         }
@@ -30,7 +30,7 @@ public class ModListParser {
         try {
             return mapper.readValue(modList, ModList.class);
         } catch (IOException e) {
-            uiLogger.warn(localizer.translate("err_mod-list_cfg_parse_error"));
+            uiLogger.warn(localizer.translate("err_modlist_cfg_parse_error"));
             logger.warn("The mod-list configuration file seems to be malformed:%n%s", e.getMessage());
             return null;
         }
