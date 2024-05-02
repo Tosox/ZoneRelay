@@ -35,9 +35,9 @@ jobs:
           java-version: 17
           distribution: temurin
           cache: maven
+      - run: ls
       - name: Build Java
         if: ${{ matrix.language == 'java' }}
-        run: ls
         run: mvnw -B -DskipTests -Pcompile-jdk17 clean install --file pom.xml
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
