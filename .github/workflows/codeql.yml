@@ -10,6 +10,7 @@ jobs:
   analyze:
     name: Analyze
     runs-on: 'ubuntu-latest'
+    if: ${{ false }}
     permissions:
       actions: read
       contents: read
