@@ -10,7 +10,7 @@ jobs:
   analyze:
     name: Analyze
     runs-on: 'ubuntu-latest'
-    if: ${{ false }}
+    if: ${{ github.repository_visibility == 'public' }}
     permissions:
       actions: read
       contents: read
