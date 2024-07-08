@@ -5,6 +5,7 @@ on:
     branches: [ 'master' ]
   pull_request:
     branches: [ 'master' ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -28,6 +29,7 @@ jobs:
         with:
           name: stalker-modlist-installer
           path: staging
+          retention-days: 1
       - name: Update dependency graph
         uses: advanced-security/maven-dependency-submission-action@v3
         with:
