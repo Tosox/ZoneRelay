@@ -36,7 +36,6 @@ jobs:
           java-version: 17
           distribution: temurin
           cache: maven
-      - run: ls
       - name: Build Java
         if: ${{ matrix.language == 'java' }}
         run: mvn -B -DskipTests -Pcompile-jdk17 clean install --file pom.xml
