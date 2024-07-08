@@ -8,6 +8,8 @@ on:
         required: true
         default: v0.0.0
 jobs:
+  build:
+    uses: ./.github/workflows/maven.yml
   release:
     permissions: write-all
     runs-on: ubuntu-latest
