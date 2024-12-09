@@ -20,7 +20,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Download artifact
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v6
         with:
           name: zone-relay
           path: artifact
