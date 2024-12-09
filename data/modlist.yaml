@@ -13,9 +13,8 @@ addonList:
     ]
 dataList:
   - id: modded_exes
-    link: https://github.com/themrdemonized/STALKER-Anomaly-modded-exes/releases/latest/download/STALKER-Anomaly-modded-exes.zip
+    link: https://github.com/themrdemonized/xray-monolith/releases/download/2024.12.9/STALKER-Anomaly-modded-exes_2024.12.9.zip
     setup: [
-      '/gamedata',
       '/db',
       '/bin'
     ]

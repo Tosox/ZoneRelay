@@ -6,7 +6,7 @@
   "gui_current_progress": "Current progress",
   "gui_total_progress": "Total progress",
 
-  "msg_welcome_message": "Welcome to the S.T.A.L.K.E.R. Modlist Installer",
+  "msg_welcome_message": "Welcome to ZoneRelay",
   "msg_read_modlist_cfg": "Reading mod list configuration",
   "msg_create_separators": "    Creating separators",
   "msg_installing_addons": "    Installing addons",

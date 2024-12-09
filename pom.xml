@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.tosox</groupId>
-    <artifactId>stalker-modlist-installer</artifactId>
+    <artifactId>zone-relay</artifactId>
     <version>0.1.0</version>
-    <name>S.T.A.L.K.E.R. Modlist Installer</name>
+    <name>ZoneRelay</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -59,7 +59,7 @@
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>de.tosox.smi.Main</mainClass>
+                                    <mainClass>de.tosox.zonerelay.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -80,17 +80,17 @@
                         <configuration>
                             <headerType>gui</headerType>
                             <jar>target/${project.artifactId}-${project.version}.jar</jar>
-                            <outfile>target/STALKER-Modlist-Installer-v${project.version}.exe</outfile>
+                            <outfile>target/${project.name}-v${project.version}.exe</outfile>
                             <dontWrapJar>false</dontWrapJar>
                             <classPath>
-                                <mainClass>de.tosox.smi.Main</mainClass>
+                                <mainClass>de.tosox.zonerelay.Main</mainClass>
                             </classPath>
                             <jre>
                                 <requiresJdk>true</requiresJdk>
                                 <requires64Bit>true</requires64Bit>
                                 <minVersion>17.0.0</minVersion>
                             </jre>
-                            <icon>src/main/resources/logo.ico</icon>
+                            <icon>src/main/resources/icon.ico</icon>
                             <versionInfo>
                                 <fileVersion>${project.version}.0</fileVersion>
                                 <fileDescription>${project.name}</fileDescription>
@@ -98,7 +98,7 @@
                                 <productVersion>${project.version}.0</productVersion>
                                 <productName>${project.name}</productName>
                                 <companyName>Tosox</companyName>
-                                <originalFilename>STALKER-Modlist-Installer-v${project.version}.exe</originalFilename>
+                                <originalFilename>${project.name}-v${project.version}.exe</originalFilename>
                             </versionInfo>
                         </configuration>
                     </execution>
