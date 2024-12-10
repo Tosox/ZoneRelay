@@ -26,7 +26,8 @@ public class StdOutRedirector {
             System.setOut(printStream);
             System.setErr(printStream);
         } catch (IOException e) {
-            CrashHandler.showErrorDialogAndExit("Unable to activate the StdOutRedirector: %n%s", e.getMessage());
+            CrashHandler.showErrorDialog("Unable to activate the StdOutRedirector: %n%s", e);
+            throw new RuntimeException("Unable to redirect stdout stream", e);
         }
     }
 

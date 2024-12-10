@@ -10,7 +10,7 @@
   "MSG_READ_MODLIST_CFG": "Reading mod list configuration",
   "MSG_CREATE_SEPARATORS": "    Creating separators",
   "MSG_INSTALLING_ADDONS": "    Installing addons",
-  "MSG_INSTALLING_DATA": "    Installing data",
+  "MSG_INSTALLING_PATCHES": "    Installing patches",
   "MSG_TITLE_SEPARATOR": "\n_______________ %s separator _______________",
   "MSG_TITLE_ADDON": "\n_______________ %s _______________",
   "MSG_CREATE_SEPARATOR": "    Creating separator in %s",
@@ -27,7 +27,7 @@
   "ERR_INVALID_INSTALL_DIR": "Please move the installer into the MO2 directory",
   "ERR_LAUNCH_MO2_FAIL": "An error occurred while trying to run MO2",
   "ERR_LAUNCH_MO2": "Please launch MO2 once first",
-  "ERR_ALREADY_INSTALLING": "An installation is currently already running",
+  "ERR_ALREADY_INSTALLING": "Installation already in progress",
   "ERR_MISSING_MODLIST_CFG": "Unable to locate the modlist configuration file",
   "ERR_MODLIST_CFG_PARSE_ERROR": "The modlist configuration file seems to be malformed"
 }

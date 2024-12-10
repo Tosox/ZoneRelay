@@ -39,13 +39,11 @@ public class Localizer {
             List<String> lines = Files.readAllLines(Path.of(path));
             return new JSONObject(String.join("", lines));
         } catch (IOException e) {
-            logger.error("Unable to find localization for '%s'", langcode);
-            CrashHandler.showErrorDialogAndExit("Unable to find localization for '%s':%n%s", langcode, e.getMessage());
-            return null; // Unreachable
+            CrashHandler.showErrorDialog("Unable to find localization for '%s':%n%s", langcode, e);
+            throw new RuntimeException(String.format("Unable to find localization for '%s'", langcode), e);
         } catch (JSONException e) {
-            logger.error("Unable to parse the contents of localization '%s'", langcode);
-            CrashHandler.showErrorDialogAndExit("Unable to parse the contents of localization '%s':%n%s", langcode, e.getMessage());
-            return null; // Unreachable
+            CrashHandler.showErrorDialog("Unable to parse the contents of localization '%s':%n%s", langcode, e);
+            throw new RuntimeException(String.format("Unable to parse the contents of localization '%s'", langcode), e);
         }
     }
 

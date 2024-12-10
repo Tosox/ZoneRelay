@@ -58,21 +58,21 @@ public class ImageUtils {
     private static BufferedImage getFallbackImage() {
         URL resource = ImageUtils.class.getResource("missing_texture.png");
         if (resource == null) {
-            CrashHandler.showErrorDialogAndExit("Couldn't determine the URL of the resource of the fallback image");
-            return null; // Unreachable
+            CrashHandler.showErrorDialog("Couldn't determine the patch of the resource for the fallback image");
+            throw new RuntimeException("Fallback image resource URL is null");
         }
 
         BufferedImage image;
         try {
             image = ImageIO.read(resource);
         } catch (IOException e) {
-            CrashHandler.showErrorDialogAndExit("An exception occurred while trying to read the contents of the fallback image:%n%s", e.getMessage());
-            return null; // Unreachable
+            CrashHandler.showErrorDialog("An exception occurred while trying to read the contents of the fallback image:%n%s", e);
+            throw new RuntimeException("Couldn't read the fallback image", e);
         }
 
         if (image == null) {
-            CrashHandler.showErrorDialogAndExit("Couldn't read the contents of the fallback image");
-            return null; // Unreachable
+            CrashHandler.showErrorDialog("Couldn't read the contents of the fallback image");
+            throw new RuntimeException("Fallback image is null");
         }
 
         return image;

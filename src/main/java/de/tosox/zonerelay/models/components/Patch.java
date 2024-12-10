@@ -6,14 +6,12 @@ import de.tosox.zonerelay.models.components.generic.ModlistComponent;
 
 import java.util.List;
 
-public record Addon(String name, String url, List<String> setup) implements ModlistComponent {
+public record Patch(String link, List<String> setup) implements ModlistComponent {
     @JsonCreator
-    public Addon(
-            @JsonProperty("name") String name,
-            @JsonProperty("url") String url,
+    public Patch(
+            @JsonProperty("link") String link,
             @JsonProperty("setup") List<String> setup) {
-        this.name = name;
-        this.url = url;
+        this.link = link;
         this.setup = setup;
     }
 }

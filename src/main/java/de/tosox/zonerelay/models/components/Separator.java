@@ -2,21 +2,12 @@ package de.tosox.zonerelay.models.components;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.tosox.zonerelay.models.components.generic.AbstractComponent;
+import de.tosox.zonerelay.models.components.generic.ModlistComponent;
 
-public class Separator extends AbstractComponent {
-    private final String name;
-
+public record Separator(String name) implements ModlistComponent {
     @JsonCreator
     public Separator(
-            @JsonProperty("id") String id,
-            @JsonProperty("name") String name)
-    {
-        super(id);
+            @JsonProperty("name") String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 }

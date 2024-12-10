@@ -32,12 +32,6 @@ public class MainFrameController {
             return;
         }
 
-        if (installationManager.isInstalling()) {
-            uiLogger.warn(localizer.translate("ERR_ALREADY_INSTALLING"));
-            logger.warn("An installation is currently already running");
-            return;
-        }
-
         installationManager.startInstallation(Main.getMainFrame().isFullInstall());
     }
 

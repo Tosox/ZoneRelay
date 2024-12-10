@@ -31,7 +31,7 @@ public class ConnectionUtils {
             }
             return connection;
         } catch (Exception e) {
-            LOGGER.warn("Couldn't create connection: %s", e.getMessage());
+            LOGGER.warn("Couldn't create connection: %s", e);
             return null;
         }
     }

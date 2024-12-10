@@ -7,9 +7,9 @@ import de.tosox.zonerelay.http.HttpFileDownload;
 import de.tosox.zonerelay.localizer.Localizer;
 import de.tosox.zonerelay.logger.Logger;
 import de.tosox.zonerelay.logger.UILogger;
+import de.tosox.zonerelay.models.Modlist;
 import de.tosox.zonerelay.models.components.Addon;
-import de.tosox.zonerelay.models.components.Data;
-import de.tosox.zonerelay.models.ModList;
+import de.tosox.zonerelay.models.components.Patch;
 import de.tosox.zonerelay.models.components.Separator;
 import de.tosox.zonerelay.utils.ConnectionUtils;
 import de.tosox.zonerelay.utils.Globals;
@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,81 +31,88 @@ public class InstallationManager {
     private final Logger logger = Logger.getInstance();
     private final Localizer localizer = Main.getLocalizer();
 
-    private static String ADDON_META = "";
-    private static String SEPARATOR_META = "";
-
+    private static final String ADDON_META;
+    private static final String SEPARATOR_META;
     private boolean isInstalling;
 
-    public InstallationManager() {
+    static {
         try {
-            ADDON_META = String.join("\n", Files.readAllLines(Paths.get(Globals.PATH_ADDON_META)));
-            SEPARATOR_META = String.join("\n", Files.readAllLines(Paths.get(Globals.PATH_SEPARATOR_META)));
+            ADDON_META = Files.readString(Paths.get(Globals.PATH_ADDON_META));
+            SEPARATOR_META = Files.readString(Paths.get(Globals.PATH_SEPARATOR_META));
         } catch (IOException e) {
-            CrashHandler.showErrorDialogAndExit("Unable to read the meta data:%n%s", e.getMessage());
+            CrashHandler.showErrorDialog("Failed to load meta data:%n%s", e);
+            throw new RuntimeException("Failed to load meta data", e);
         }
     }
 
     public void startInstallation(boolean fullInstallation) {
-        isInstalling = true;
+        if (isInstalling) {
+            uiLogger.warn(localizer.translate("ERR_ALREADY_INSTALLING"));
+            logger.warn("Installation already in progress");
+            return;
+        }
+
         new Thread(this::runInstallation).start();
     }
 
     private void runInstallation() {
-        uiLogger.info(localizer.translate("MSG_READ_MODLIST_CFG"));
-        ModList modList = ModListParser.parse(Globals.PATH_MOD_LIST_CFG);
-        if (modList == null) {
+        try {
+            uiLogger.info(localizer.translate("MSG_READ_MODLIST_CFG"));
+            Modlist modList = ModListParser.parse(Globals.PATH_MOD_LIST_CFG);
+            if (modList == null) {
+                isInstalling = false;
+                return;
+            }
+
+            uiLogger.info("\n=================================================================");
+            uiLogger.info(localizer.translate("MSG_CREATE_SEPARATORS"));
+            uiLogger.info("=================================================================");
+            for (Separator separator : modList.getSeparators()) {
+                handleSeparator(separator);
+            }
+
+            uiLogger.info("\n=================================================================");
+            uiLogger.info(localizer.translate("MSG_INSTALLING_ADDONS"));
+            uiLogger.info("=================================================================");
+            for (Addon addon : modList.getAddons()) {
+                handleAddon(addon);
+            }
+
+            uiLogger.info("\n=================================================================");
+            uiLogger.info(localizer.translate("MSG_INSTALLING_DATA"));
+            uiLogger.info("=================================================================");
+            for (Patch patch : modList.getPatches()) {
+                handlePatch(patch);
+            }
+        } catch (Exception e) {
+            CrashHandler.showErrorDialog("An error occurred while trying to install the modlist: %n%s", e);
+            throw new RuntimeException("An error occurred while trying to install the modlist", e);
+        } finally {
             isInstalling = false;
-            return;
         }
-
-        uiLogger.info("\n=================================================================");
-        uiLogger.info(localizer.translate("MSG_CREATE_SEPARATORS"));
-        uiLogger.info("=================================================================");
-        for (Separator separator : modList.getSeparatorList()) {
-            handleSeparator(separator);
-        }
-
-        uiLogger.info("\n=================================================================");
-        uiLogger.info(localizer.translate("MSG_INSTALLING_ADDONS"));
-        uiLogger.info("=================================================================");
-        for (Addon addon : modList.getAddonList()) {
-            handleAddon(addon);
-        }
-
-        uiLogger.info("\n=================================================================");
-        uiLogger.info(localizer.translate("MSG_INSTALLING_DATA"));
-        uiLogger.info("=================================================================");
-        for (Data data : modList.getDataList()) {
-            handleData(data);
-        }
-
-        isInstalling = false;
     }
 
     private void handleAddon(Addon addon) {
-        URL addonUrl = ConnectionUtils.createUrl(addon.getLink());
+        URL addonUrl = ConnectionUtils.createUrl(addon.url());
         if (addonUrl == null) {
-            // TODO: Couldn't parse link to URL
-            return;
+            throw new RuntimeException("Unable to resolve addon url");
         }
 
-        String addonName = addon.getName();
-        List<String> addonSetup = addon.getSetup();
+        String addonName = addon.name();
+        List<String> addonSetup = addon.setup();
 
         uiLogger.info(localizer.translate("MSG_TITLE_ADDON", addonName));
         logger.info("Creating addon: %s", addonName);
 
         HttpURLConnection connection = ConnectionUtils.createHeadConnection(addonUrl);
         if (connection == null) {
-            // TODO: Couldn't establish connection
-            return;
+            throw new RuntimeException("An error occurred while trying to build a connection");
         }
 
         HttpFileDownload downloadFile = new HttpFileDownload(connection);
         String downloadFileName = downloadFile.getFilename();
         if (downloadFileName == null) {
-            // TODO: Handle
-            return;
+            throw new RuntimeException("Unable to resolve the filename");
         }
 
         // Initialize variables
@@ -129,8 +135,7 @@ public class InstallationManager {
                 Files.createDirectories(archivePath.getParent());
                 Files.write(archivePath, downloadFile.getContent());
             } catch (IOException e) {
-                logger.info("Failed to download addon: %n%s", e.getMessage());
-                return;
+                throw new RuntimeException("An error occurred while trying to download the addon", e);
             }
             extract(archivePath, archiveOutput);
         }
@@ -140,8 +145,7 @@ public class InstallationManager {
         try {
             FileUtils.deleteDirectory(addonPath.toFile());
         } catch (IOException e) {
-            // TODO: error
-            return;
+            throw new RuntimeException("An error occurred while trying to delete the old addon contents", e);
         }
 
         uiLogger.info(localizer.translate("MSG_READ_SETUP"));
@@ -155,8 +159,7 @@ public class InstallationManager {
             try {
                 FileUtils.copyDirectory(sourceDirectory.toFile(), destinationDirectory.toFile());
             } catch (IOException e) {
-                // TODO: logger warning
-                return;
+                throw new RuntimeException("An error occurred while trying to execute the instructions", e);
             }
         }
 
@@ -164,7 +167,7 @@ public class InstallationManager {
     }
 
     private void handleSeparator(Separator separator) {
-        String separatorName = separator.getName();
+        String separatorName = separator.name();
         String folderName = separatorName + "_separator";
         Path folderPath = Paths.get(Globals.DIR_MO2_MODS, folderName);
 
@@ -175,9 +178,9 @@ public class InstallationManager {
         generateMetadata(folderPath, SEPARATOR_META);
     }
 
-    private void handleData(Data data) {
-        String dataUrl = data.getLink();
-        List<String> dataSetup = data.getSetup();
+    private void handlePatch(Patch patch) {
+        String dataUrl = patch.link();
+        List<String> dataSetup = patch.setup();
 
         // uiLogger.info(localizer.translate("msg_title_addon", addonName));
         // logger.info("Creating data: %s", addonName);
@@ -206,8 +209,7 @@ public class InstallationManager {
                 throw new IOException("Extraction process failed with exit code " + exitCode);
             }
         } catch (Exception e) {
-            logger.error("Failed to extract %s: %n%s", archivePath, e.getMessage());
-            // TODO: error
+            throw new RuntimeException("An error occurred while trying to extract an archive", e);
         }
     }
 
@@ -219,11 +221,7 @@ public class InstallationManager {
             Files.createDirectories(metaPath.getParent());
             Files.writeString(metaPath, data);
         } catch (IOException e) {
-            // TODO: logger warning
+            throw new RuntimeException("An error occurred while trying to write the meta data", e);
         }
-    }
-
-    public boolean isInstalling() {
-        return isInstalling;
     }
 }
