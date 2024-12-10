@@ -128,8 +128,7 @@ public class MainFrame extends JFrame {
         {
             JPanel pnlOptions = new JPanel(null);
             {
-                BufferedImage resizedLogo = ImageUtils.resize(LOGO, 160, 80);
-                JImagePanel imgLogo = new JImagePanel(resizedLogo);
+                JImagePanel imgLogo = new JImagePanel(LOGO);
                 imgLogo.setBackground(new Color(0x03, 0x03, 0x03));
                 imgLogo.setBounds(10, 10, 160, 80);
                 pnlOptions.add(imgLogo);

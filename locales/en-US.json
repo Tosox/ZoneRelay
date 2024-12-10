@@ -7,6 +7,7 @@
   "GUI_TOTAL_PROGRESS": "Total progress",
 
   "MSG_WELCOME_MESSAGE": "Welcome to ZoneRelay",
+  "MSG_COMPLETE_INSTALLATION": "\nInstallation complete. You can now launch the MO2 instance of the modpack from the desktop",
   "MSG_READ_MODLIST_CFG": "Reading mod list configuration",
   "MSG_CREATE_SEPARATORS": "    Creating separators",
   "MSG_INSTALLING_ADDONS": "    Installing addons",
@@ -23,6 +24,10 @@
   "MSG_COPY_TO": "        Copying %s ==> %s",
   "MSG_COPY": "    Copying %s",
   "MSG_EXTRACT_TO": "    Extracting to %s",
+  "MSG_INSTALLATION_MO2_SETUP": "    MO2 Setup",
+  "MSG_INSTALLATION_CLEANUP": "    Cleaning Workspace",
+  "MSG_CREATE_CUSTOM_PROFILE": "    Creating custom MO2 profile",
+  "MSG_CREATE_SHORTCUT": "    Creating shortcut to the modpack MO2 instance on the desktop",
 
   "ERR_INVALID_INSTALL_DIR": "Please move the installer into the MO2 directory",
   "ERR_LAUNCH_MO2_FAIL": "An error occurred while trying to run MO2",

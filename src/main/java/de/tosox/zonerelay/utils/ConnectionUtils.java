@@ -20,7 +20,7 @@ public class ConnectionUtils {
         }
     }
 
-    public static HttpURLConnection createHeadConnection(URL url) {
+    public static HttpURLConnection createGetConnection(URL url) {
         try {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");

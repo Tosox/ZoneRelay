@@ -8,6 +8,7 @@ public class Globals {
     public static final String DIR_LOCALES = "./locales";
     public static final String DIR_LOGS = "./logs";
     public static final String DIR_MO2_MODS = "../mods";
+    public static final String DIR_MO2_PROFILES = "../profiles";
     public static final String DIR_DOWNLOADS = "../downloads";
     public static final String DIR_TEMP = "./temp";
 
@@ -19,6 +20,7 @@ public class Globals {
     public static final String PATH_MOD_LIST_ICO = "./data/assets/icon.ico";
     public static final String PATH_MOD_LIST_SPLASH = "./data/assets/splash.png";
 
+    public static final String DIR_PROFILE_FILES = "./resources/profile_files";
     public static final String PATH_7Z = "./resources/7zip/7z.exe";
     public static final String PATH_ADDON_META = "./resources/addon-meta.ini-template.txt";
     public static final String PATH_SEPARATOR_META = "./resources/separator-meta.ini-template.txt";

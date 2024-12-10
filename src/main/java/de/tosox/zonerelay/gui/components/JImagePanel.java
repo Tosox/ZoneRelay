@@ -20,6 +20,6 @@ public class JImagePanel extends JPanel {
     }
 
     private Image getScaledToBoundsInstance() {
-        return image.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT);
+        return image.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
     }
 }

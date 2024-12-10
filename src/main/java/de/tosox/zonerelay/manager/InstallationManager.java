@@ -2,7 +2,7 @@ package de.tosox.zonerelay.manager;
 
 import de.tosox.zonerelay.Main;
 import de.tosox.zonerelay.handler.CrashHandler;
-import de.tosox.zonerelay.handler.ModListParser;
+import de.tosox.zonerelay.handler.ModlistParser;
 import de.tosox.zonerelay.http.HttpFileDownload;
 import de.tosox.zonerelay.localizer.Localizer;
 import de.tosox.zonerelay.logger.Logger;
@@ -13,18 +13,18 @@ import de.tosox.zonerelay.models.components.Patch;
 import de.tosox.zonerelay.models.components.Separator;
 import de.tosox.zonerelay.utils.ConnectionUtils;
 import de.tosox.zonerelay.utils.Globals;
+import mslinks.ShellLink;
 import org.apache.commons.io.FileUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
-import java.util.List;
+import java.util.Properties;
 
 public class InstallationManager {
     private final UILogger uiLogger = UILogger.getInstance();
@@ -58,7 +58,7 @@ public class InstallationManager {
     private void runInstallation() {
         try {
             uiLogger.info(localizer.translate("MSG_READ_MODLIST_CFG"));
-            Modlist modList = ModListParser.parse(Globals.PATH_MOD_LIST_CFG);
+            Modlist modList = ModlistParser.parse(Globals.PATH_MOD_LIST_CFG);
             if (modList == null) {
                 isInstalling = false;
                 return;
@@ -79,11 +79,26 @@ public class InstallationManager {
             }
 
             uiLogger.info("\n=================================================================");
-            uiLogger.info(localizer.translate("MSG_INSTALLING_DATA"));
+            uiLogger.info(localizer.translate("MSG_INSTALLING_PATCHES"));
             uiLogger.info("=================================================================");
             for (Patch patch : modList.getPatches()) {
                 handlePatch(patch);
             }
+
+            uiLogger.info("\n=================================================================");
+            uiLogger.info(localizer.translate("MSG_INSTALLATION_MO2_SETUP"));
+            uiLogger.info("=================================================================");
+            setupMO2Profile();
+            copySplash();
+            createShortcut();
+
+            uiLogger.info("\n=================================================================");
+            uiLogger.info(localizer.translate("MSG_INSTALLATION_CLEANUP"));
+            uiLogger.info("=================================================================");
+            FileUtils.forceDelete(new File(Globals.DIR_TEMP));
+
+            uiLogger.info(localizer.translate("MSG_COMPLETE_INSTALLATION"));
+            logger.info("Installation complete");
         } catch (Exception e) {
             CrashHandler.showErrorDialog("An error occurred while trying to install the modlist: %n%s", e);
             throw new RuntimeException("An error occurred while trying to install the modlist", e);
@@ -99,12 +114,11 @@ public class InstallationManager {
         }
 
         String addonName = addon.name();
-        List<String> addonSetup = addon.setup();
 
         uiLogger.info(localizer.translate("MSG_TITLE_ADDON", addonName));
         logger.info("Creating addon: %s", addonName);
 
-        HttpURLConnection connection = ConnectionUtils.createHeadConnection(addonUrl);
+        HttpURLConnection connection = ConnectionUtils.createGetConnection(addonUrl);
         if (connection == null) {
             throw new RuntimeException("An error occurred while trying to build a connection");
         }
@@ -150,7 +164,7 @@ public class InstallationManager {
 
         uiLogger.info(localizer.translate("MSG_READ_SETUP"));
         logger.info("Reading setup instructions");
-        for (String instruction : addonSetup) {
+        for (String instruction : addon.setup()) {
             Path sourceDirectory = archiveOutput.resolve(instruction);
             Path destinationDirectory = addonPath.resolve(instruction.substring(instruction.lastIndexOf("/") + 1));
 
@@ -179,11 +193,57 @@ public class InstallationManager {
     }
 
     private void handlePatch(Patch patch) {
-        String dataUrl = patch.link();
-        List<String> dataSetup = patch.setup();
+        URL patchUrl = ConnectionUtils.createUrl(patch.url());
+        if (patchUrl == null) {
+            throw new RuntimeException("Unable to resolve patch url");
+        }
 
-        // uiLogger.info(localizer.translate("msg_title_addon", addonName));
-        // logger.info("Creating data: %s", addonName);
+        String patchName = patch.name();
+
+        uiLogger.info(localizer.translate("MSG_TITLE_ADDON", patchName));
+        logger.info("Creating patch: %s", patchName);
+
+        HttpURLConnection connection = ConnectionUtils.createGetConnection(patchUrl);
+        if (connection == null) {
+            throw new RuntimeException("An error occurred while trying to build a connection");
+        }
+
+        HttpFileDownload downloadFile = new HttpFileDownload(connection);
+        String downloadFileName = downloadFile.getFilename();
+        if (downloadFileName == null) {
+            throw new RuntimeException("Unable to resolve the filename");
+        }
+
+        // Initialize variables
+        Path archiveOutput = Paths.get(Globals.DIR_TEMP, downloadFileName);
+        Path archivePath = Paths.get(Globals.DIR_DOWNLOADS, downloadFileName);
+        Path patchPath = getGamePath();
+
+        // Download and extract patch
+        uiLogger.info(localizer.translate("MSG_DOWNLOADING_TO", archivePath));
+        logger.info("Downloading to %s", archivePath);
+        try {
+            Files.createDirectories(archivePath.getParent());
+            Files.write(archivePath, downloadFile.getContent());
+        } catch (IOException e) {
+            throw new RuntimeException("An error occurred while trying to download the patch", e);
+        }
+        extract(archivePath, archiveOutput);
+
+        uiLogger.info(localizer.translate("MSG_READ_SETUP"));
+        logger.info("Reading setup instructions");
+        for (String instruction : patch.setup()) {
+            Path sourceDirectory = archiveOutput.resolve(instruction);
+            Path destinationDirectory = patchPath.resolve(instruction.substring(instruction.lastIndexOf("/") + 1));
+
+            uiLogger.info(localizer.translate("MSG_COPY_TO", instruction, instruction.substring(instruction.lastIndexOf("/") + 1)));
+            logger.info("Copying %s to %s", sourceDirectory, destinationDirectory);
+            try {
+                FileUtils.copyDirectory(sourceDirectory.toFile(), destinationDirectory.toFile());
+            } catch (IOException e) {
+                throw new RuntimeException("An error occurred while trying to execute the instructions", e);
+            }
+        }
     }
 
     private void extract(Path archivePath, Path destination) {
@@ -223,5 +283,77 @@ public class InstallationManager {
         } catch (IOException e) {
             throw new RuntimeException("An error occurred while trying to write the meta data", e);
         }
+    }
+
+    private Path getGamePath() {
+        try (FileReader reader = new FileReader(Globals.PATH_MO2_CFG)) {
+            // Load the configuration file
+            Properties properties = new Properties();
+            properties.load(reader);
+
+            // Retrieve the game path
+            String gamePath = properties.getProperty("gamePath");
+            if (gamePath != null) {
+                // Process and clean the game path
+                return Paths.get(gamePath.replace("@ByteArray(", "").replace(")", ""));
+            } else {
+                throw new IllegalStateException("gamePath not found in the configuration file");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read MO2 configuration file", e);
+        }
+    }
+
+    public void createShortcut() {
+        uiLogger.info(localizer.translate("MSG_CREATE_SHORTCUT"));
+
+        String desktopPath = System.getProperty("user.home") + "/Desktop";
+        Path shortcutPath = Paths.get(desktopPath, "S.T.A.L.K.E.R. VIP.lnk"); // TODO: make name customizable
+
+        try {
+            ShellLink.createLink(Globals.PATH_MO2_EXE)
+                    .setIconLocation(Globals.PATH_MOD_LIST_ICO) // TODO: make icon optional
+                    .saveTo(shortcutPath.toAbsolutePath().toString());
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to create shortcut", e);
+        }
+    }
+
+    public void copySplash() {
+        Path splashImagePath = Path.of(Globals.PATH_MOD_LIST_SPLASH);
+        if (!Files.exists(splashImagePath)) {
+            return;
+        }
+
+        uiLogger.info(localizer.translate("MSG_COPY", "splash.png"));
+        try {
+            Files.copy(splashImagePath, Paths.get(Globals.DIR_MO2, "splash.png"), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to copy splash screen", e);
+        }
+    }
+
+    public void setupMO2Profile() {
+        // Copy default profile files
+        uiLogger.info(localizer.translate("MSG_CREATE_CUSTOM_PROFILE"));
+        Path vipProfilePath = Paths.get(Globals.DIR_MO2_PROFILES, "VIP"); // // TODO: make name customizable
+        try {
+            FileUtils.copyDirectory(new File(Globals.DIR_PROFILE_FILES), vipProfilePath.toFile());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to copy profile files", e);
+        }
+
+        // Copy modlist.txt
+        uiLogger.info(localizer.translate("MSG_COPY", "modlist.txt"));
+        try {
+            FileUtils.copyFile(
+                    Paths.get(Globals.PATH_MOD_LIST_MO2).toFile(),
+                    vipProfilePath.resolve("modlist.txt").toFile()
+            );
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to copy modlist.txt", e);
+        }
+
+        // TODO: Change to custom profile in MorOrganizer.ini
     }
 }

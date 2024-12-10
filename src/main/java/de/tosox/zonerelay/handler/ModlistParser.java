@@ -11,17 +11,17 @@ import de.tosox.zonerelay.models.Modlist;
 import java.io.File;
 import java.io.IOException;
 
-public class ModListParser {
+public class ModlistParser {
     private static final UILogger uiLogger = UILogger.getInstance();
     private static final Logger logger = Logger.getInstance();
     private static final Localizer localizer = Main.getLocalizer();
 
-    private ModListParser() {}
+    private ModlistParser() {}
 
     public static Modlist parse(String modListPath) {
         File modList = new File(modListPath);
         if (!modList.isFile()) {
-            uiLogger.warn(localizer.translate("err_missing_modlist_cfg"));
+            uiLogger.warn(localizer.translate("ERR_MISSING_MODLIST_CFG"));
             logger.warn("Unable to locate the mod-list configuration file");
             return null;
         }
@@ -30,7 +30,7 @@ public class ModListParser {
         try {
             return mapper.readValue(modList, Modlist.class);
         } catch (IOException e) {
-            uiLogger.warn(localizer.translate("err_modlist_cfg_parse_error"));
+            uiLogger.warn(localizer.translate("ERR_MODLIST_CFG_PARSE_ERROR"));
             logger.warn("The mod-list configuration file seems to be malformed:%n%s", e.getMessage());
             return null;
         }
