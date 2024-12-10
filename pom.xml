@@ -21,6 +21,13 @@
             <version>3.5.4</version>
         </dependency>
 
+        <!-- Utilities -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.18.0</version>
+        </dependency>
+
         <!-- File Type Parser -->
         <dependency>
             <groupId>org.json</groupId>

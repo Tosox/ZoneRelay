@@ -48,7 +48,7 @@ public class MainFrame extends JFrame {
         UILogger uiLogger = UILogger.getInstance();
         uiLogger.setTextPane(txpOutput);
 
-        uiLogger.info(localizer.translate("msg_welcome_message"));
+        uiLogger.info(localizer.translate("MSG_WELCOME_MESSAGE"));
         uiLogger.info("\n-------------------------------------------------------------------------------------------------------\n");
     }
 
@@ -134,7 +134,7 @@ public class MainFrame extends JFrame {
                 imgLogo.setBounds(10, 10, 160, 80);
                 pnlOptions.add(imgLogo);
 
-                JLabel lblVersion = new JLabel(localizer.translate("gui_installer_version", Globals.APP_VERSION), SwingConstants.CENTER);
+                JLabel lblVersion = new JLabel(localizer.translate("GUI_INSTALLER_VERSION", Globals.APP_VERSION), SwingConstants.CENTER);
                 lblVersion.setForeground(new Color(0xC2, 0xC2, 0xC2));
                 lblVersion.setBounds(10, 90, 160, 30);
                 pnlOptions.add(lblVersion);
@@ -144,14 +144,14 @@ public class MainFrame extends JFrame {
                 sepLogo.setForeground(Color.WHITE);
                 pnlOptions.add(sepLogo);
 
-                JButton btnInstall = new JButton(localizer.translate("gui_install"));
+                JButton btnInstall = new JButton(localizer.translate("GUI_INSTALL"));
                 btnInstall.setBounds(10, 135, 160, 80);
                 btnInstall.setBackground(new Color(0x03, 0x03, 0x03));
                 btnInstall.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
                 btnInstall.addActionListener(a -> mainFrameController.onInstallClick());
                 pnlOptions.add(btnInstall);
 
-                cbxFullInstall = new JCheckBox(localizer.translate("gui_full_installation"));
+                cbxFullInstall = new JCheckBox(localizer.translate("GUI_FULL_INSTALLATION"));
                 cbxFullInstall.setBounds(20, 215, 160, 30);
                 pnlOptions.add(cbxFullInstall);
 
@@ -160,7 +160,7 @@ public class MainFrame extends JFrame {
                 sepInstall.setForeground(Color.WHITE);
                 pnlOptions.add(sepInstall);
 
-                JButton btnLaunch = new JButton(localizer.translate("gui_launch_mo2"));
+                JButton btnLaunch = new JButton(localizer.translate("GUI_LAUNCH_MO2"));
                 btnLaunch.setBounds(10, 280, 160, 80);
                 btnLaunch.setBackground(new Color(0x03, 0x03, 0x03));
                 btnLaunch.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, false));
@@ -183,7 +183,7 @@ public class MainFrame extends JFrame {
                 scpOutput.setBounds(10, 10, 580, 480);
                 pnlOutput.add(scpOutput);
 
-                JLabel lblCurrent = new JLabel(localizer.translate("gui_current_progress"));
+                JLabel lblCurrent = new JLabel(localizer.translate("GUI_CURRENT_PROGRESS"));
                 lblCurrent.setBounds(10, 495, 90, 30);
                 pnlOutput.add(lblCurrent);
 
@@ -192,7 +192,7 @@ public class MainFrame extends JFrame {
                 pgbCurrent.setBounds(110, 500, 480, 20);
                 pnlOutput.add(pgbCurrent);
 
-                JLabel lblTotal = new JLabel(localizer.translate("gui_total_progress"));
+                JLabel lblTotal = new JLabel(localizer.translate("GUI_TOTAL_PROGRESS"));
                 lblTotal.setBounds(10, 525, 90, 30);
                 pnlOutput.add(lblTotal);
 

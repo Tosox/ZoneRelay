@@ -21,19 +21,19 @@ public class MainFrameController {
 
     public void onInstallClick() {
         if (Files.notExists(Paths.get(Globals.PATH_MO2_EXE))) {
-            uiLogger.warn(localizer.translate("err_invalid_install_dir"));
+            uiLogger.warn(localizer.translate("ERR_INVALID_INSTALL_DIR"));
             logger.warn("Please move the installer into the MO2 directory");
             return;
         }
 
         if (Files.notExists(Paths.get(Globals.PATH_MO2_CFG))) {
-            uiLogger.warn(localizer.translate("err_launch_mo2"));
+            uiLogger.warn(localizer.translate("ERR_LAUNCH_MO2"));
             logger.warn("Please launch MO2 once first");
             return;
         }
 
         if (installationManager.isInstalling()) {
-            uiLogger.warn(localizer.translate("err_already_installing"));
+            uiLogger.warn(localizer.translate("ERR_ALREADY_INSTALLING"));
             logger.warn("An installation is currently already running");
             return;
         }
@@ -43,7 +43,7 @@ public class MainFrameController {
 
     public void onLaunchClick() {
         if (Files.notExists(Paths.get(Globals.PATH_MO2_EXE))) {
-            uiLogger.warn(localizer.translate("err_invalid_install_dir"));
+            uiLogger.warn(localizer.translate("ERR_INVALID_INSTALL_DIR"));
             logger.warn("Please move the installer into the MO2 directory");
             return;
         }
@@ -51,7 +51,7 @@ public class MainFrameController {
         try {
             Runtime.getRuntime().exec(Globals.PATH_MO2_EXE, null, new File(Globals.DIR_MO2));
         } catch (IOException e) {
-            uiLogger.error(localizer.translate("err_launch_mo2_fail"));
+            uiLogger.error(localizer.translate("ERR_LAUNCH_MO2_FAIL"));
             logger.error("An error occurred while trying to run MO2:%n%s", e.getMessage());
         }
     }
