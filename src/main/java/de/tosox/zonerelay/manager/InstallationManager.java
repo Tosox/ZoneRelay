@@ -311,9 +311,9 @@ public class InstallationManager {
         Path shortcutPath = Paths.get(desktopPath, "S.T.A.L.K.E.R. VIP.lnk"); // TODO: make name customizable
 
         try {
-            ShellLink.createLink(Globals.PATH_MO2_EXE)
-                    .setIconLocation(Globals.PATH_MOD_LIST_ICO) // TODO: make icon optional
-                    .saveTo(shortcutPath.toAbsolutePath().toString());
+            ShellLink.createLink(Path.of(Globals.PATH_MO2_EXE).toAbsolutePath().normalize().toString())
+                    .setIconLocation(Path.of(Globals.PATH_MOD_LIST_ICO).toAbsolutePath().normalize().toString()) // TODO: make icon optional
+                    .saveTo(shortcutPath.toString());
         } catch (IOException e) {
             throw new RuntimeException("Unable to create shortcut", e);
         }
