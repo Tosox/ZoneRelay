@@ -130,10 +130,7 @@ public class InstallManager {
         Path addonPath = Paths.get(Globals.DIR_MO2_MODS, addonName);
 
         // Download and extract addon
-        if (archiveOutput.toFile().isDirectory()) {
-            uiLogger.info(localizer.translate("MSG_ADDON_ALREADY_EXTRACTED", archiveOutput));
-            logger.info("File already extracted: %s", archiveOutput);
-        } else if (archivePath.toFile().isFile()) {
+        if (archivePath.toFile().isFile()) {
             uiLogger.info(localizer.translate("MSG_ADDON_ALREADY_DOWNLOADED", archivePath));
             logger.info("File already downloaded: %s", archivePath);
             extract(archivePath, archiveOutput);
