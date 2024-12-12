@@ -11,13 +11,12 @@ import de.tosox.zonerelay.models.Modlist;
 import de.tosox.zonerelay.models.components.Addon;
 import de.tosox.zonerelay.models.components.Patch;
 import de.tosox.zonerelay.models.components.Separator;
-import de.tosox.zonerelay.utils.ConnectionUtils;
 import de.tosox.zonerelay.utils.Globals;
 import mslinks.ShellLink;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
-import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,6 +29,7 @@ public class InstallManager {
     private final UILogger uiLogger = UILogger.getInstance();
     private final Logger logger = Logger.getInstance();
     private final Localizer localizer = Main.getLocalizer();
+    private final CrashManager crashManager = new CrashManager();
 
     private static final String ADDON_META;
     private static final String SEPARATOR_META;
@@ -56,6 +56,8 @@ public class InstallManager {
     }
 
     private void runInstallation() {
+        String lastCrashId = crashManager.loadCrashData();
+
         try {
             uiLogger.info(localizer.translate("MSG_READ_MODLIST_CFG"));
             Modlist modList = ModlistParser.parse(Globals.PATH_MOD_LIST_CFG);
@@ -67,21 +69,36 @@ public class InstallManager {
             uiLogger.info("\n=================================================================");
             uiLogger.info(localizer.translate("MSG_CREATE_SEPARATORS"));
             uiLogger.info("=================================================================");
-            for (Separator separator : modList.getSeparators()) {
+            for (Separator separator : modList.separators()) {
+                if ((lastCrashId != null) && (lastCrashId.equals(separator.getId()))) {
+                    continue;
+                }
+
+                crashManager.saveCrashData(separator.getId());
                 handleSeparator(separator);
             }
 
             uiLogger.info("\n=================================================================");
             uiLogger.info(localizer.translate("MSG_INSTALLING_ADDONS"));
             uiLogger.info("=================================================================");
-            for (Addon addon : modList.getAddons()) {
+            for (Addon addon : modList.addons()) {
+                if ((lastCrashId != null) && (lastCrashId.equals(addon.getId()))) {
+                    continue;
+                }
+
+                crashManager.saveCrashData(addon.getId());
                 handleAddon(addon);
             }
 
             uiLogger.info("\n=================================================================");
             uiLogger.info(localizer.translate("MSG_INSTALLING_PATCHES"));
             uiLogger.info("=================================================================");
-            for (Patch patch : modList.getPatches()) {
+            for (Patch patch : modList.patches()) {
+                if ((lastCrashId != null) && (lastCrashId.equals(patch.getId()))) {
+                    continue;
+                }
+
+                crashManager.saveCrashData(patch.getId());
                 handlePatch(patch);
             }
 
@@ -96,6 +113,7 @@ public class InstallManager {
             uiLogger.info(localizer.translate("MSG_INSTALLATION_CLEANUP"));
             uiLogger.info("=================================================================");
             FileUtils.forceDelete(new File(Globals.DIR_TEMP));
+            crashManager.clearCrashData();
 
             uiLogger.info(localizer.translate("MSG_COMPLETE_INSTALLATION"));
             logger.info("Installation complete");
@@ -107,13 +125,9 @@ public class InstallManager {
         }
     }
 
-    private void handleAddon(Addon addon) {
-        URL addonUrl = ConnectionUtils.createUrl(addon.url());
-        if (addonUrl == null) {
-            throw new RuntimeException("Unable to resolve addon url");
-        }
-
-        String addonName = addon.name();
+    private void handleAddon(Addon addon) throws MalformedURLException {
+        URL addonUrl = new URL(addon.getUrl());
+        String addonName = addon.getName();
 
         uiLogger.info(localizer.translate("MSG_TITLE_ADDON", addonName));
         logger.info("Creating addon: %s", addonName);
@@ -156,7 +170,7 @@ public class InstallManager {
 
         uiLogger.info(localizer.translate("MSG_READ_SETUP"));
         logger.info("Reading setup instructions");
-        for (String instruction : addon.setup()) {
+        for (String instruction : addon.getSetup()) {
             Path sourceDirectory = archiveOutput.resolve(instruction);
             Path destinationDirectory = addonPath.resolve(instruction.substring(instruction.lastIndexOf("/") + 1));
 
@@ -173,7 +187,7 @@ public class InstallManager {
     }
 
     private void handleSeparator(Separator separator) {
-        String separatorName = separator.name();
+        String separatorName = separator.getName();
         String folderName = separatorName + "_separator";
         Path folderPath = Paths.get(Globals.DIR_MO2_MODS, folderName);
 
@@ -184,13 +198,9 @@ public class InstallManager {
         generateMetadata(folderPath, SEPARATOR_META);
     }
 
-    private void handlePatch(Patch patch) {
-        URL patchUrl = ConnectionUtils.createUrl(patch.url());
-        if (patchUrl == null) {
-            throw new RuntimeException("Unable to resolve patch url");
-        }
-
-        String patchName = patch.name();
+    private void handlePatch(Patch patch) throws MalformedURLException {
+        URL patchUrl = new URL(patch.getUrl());
+        String patchName = patch.getName();
 
         uiLogger.info(localizer.translate("MSG_TITLE_ADDON", patchName));
         logger.info("Creating patch: %s", patchName);
@@ -219,7 +229,7 @@ public class InstallManager {
 
         uiLogger.info(localizer.translate("MSG_READ_SETUP"));
         logger.info("Reading setup instructions");
-        for (String instruction : patch.setup()) {
+        for (String instruction : patch.getSetup()) {
             Path sourceDirectory = archiveOutput.resolve(instruction);
             Path destinationDirectory = patchPath.resolve(instruction.substring(instruction.lastIndexOf("/") + 1));
 
@@ -323,9 +333,9 @@ public class InstallManager {
     public void setupMO2Profile() {
         // Copy default profile files
         uiLogger.info(localizer.translate("MSG_CREATE_CUSTOM_PROFILE"));
-        Path vipProfilePath = Paths.get(Globals.DIR_MO2_PROFILES, "VIP"); // // TODO: make name customizable
+        Path newProfilePath = Paths.get(Globals.DIR_MO2_PROFILES, "VIP"); // TODO: make name customizable
         try {
-            FileUtils.copyDirectory(new File(Globals.DIR_PROFILE_FILES), vipProfilePath.toFile());
+            FileUtils.copyDirectory(new File(Globals.DIR_PROFILE_FILES), newProfilePath.toFile());
         } catch (IOException e) {
             throw new RuntimeException("Failed to copy profile files", e);
         }
@@ -335,7 +345,7 @@ public class InstallManager {
         try {
             FileUtils.copyFile(
                     Paths.get(Globals.PATH_MOD_LIST_MO2).toFile(),
-                    vipProfilePath.resolve("modlist.txt").toFile()
+                    newProfilePath.resolve("modlist.txt").toFile()
             );
         } catch (IOException e) {
             throw new RuntimeException("Failed to copy modlist.txt", e);

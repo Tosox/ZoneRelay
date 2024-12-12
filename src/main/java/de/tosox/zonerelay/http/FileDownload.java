@@ -17,7 +17,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileDownload {
-
     private static final Pattern FILENAME_FROM_CONTENT_DISPOSITION = Pattern.compile("filename\\*?=['\"]?(?:UTF-\\d['\"]*)?([^;\"']*)['\"]?;?");
     private static final Pattern BASE_DOMAIN_FROM_URL = Pattern.compile("(?:https?://)?(?:www\\.)?(?:[\\w-]+\\.)*([\\w-]+\\.\\w+)");
     private static final OkHttpClient CLIENT = new OkHttpClient();
