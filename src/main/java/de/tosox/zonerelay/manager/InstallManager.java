@@ -70,7 +70,7 @@ public class InstallManager {
             uiLogger.info(localizer.translate("MSG_CREATE_SEPARATORS"));
             uiLogger.info("=================================================================");
             for (Separator separator : modList.separators()) {
-                if ((lastCrashId != null) && (lastCrashId.equals(separator.getId()))) {
+                if ((lastCrashId != null) && (!lastCrashId.equals(separator.getId()))) {
                     continue;
                 }
 
@@ -82,7 +82,7 @@ public class InstallManager {
             uiLogger.info(localizer.translate("MSG_INSTALLING_ADDONS"));
             uiLogger.info("=================================================================");
             for (Addon addon : modList.addons()) {
-                if ((lastCrashId != null) && (lastCrashId.equals(addon.getId()))) {
+                if ((lastCrashId != null) && (!lastCrashId.equals(addon.getId()))) {
                     continue;
                 }
 
@@ -94,7 +94,7 @@ public class InstallManager {
             uiLogger.info(localizer.translate("MSG_INSTALLING_PATCHES"));
             uiLogger.info("=================================================================");
             for (Patch patch : modList.patches()) {
-                if ((lastCrashId != null) && (lastCrashId.equals(patch.getId()))) {
+                if ((lastCrashId != null) && (!lastCrashId.equals(patch.getId()))) {
                     continue;
                 }
 
