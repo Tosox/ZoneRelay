@@ -3,7 +3,7 @@ package de.tosox.zonerelay.manager;
 import de.tosox.zonerelay.Main;
 import de.tosox.zonerelay.handler.CrashHandler;
 import de.tosox.zonerelay.handler.ModlistParser;
-import de.tosox.zonerelay.http.HttpFileDownload;
+import de.tosox.zonerelay.http.FileDownload;
 import de.tosox.zonerelay.localizer.Localizer;
 import de.tosox.zonerelay.logger.Logger;
 import de.tosox.zonerelay.logger.UILogger;
@@ -26,7 +26,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
 import java.util.Properties;
 
-public class InstallationManager {
+public class InstallManager {
     private final UILogger uiLogger = UILogger.getInstance();
     private final Logger logger = Logger.getInstance();
     private final Localizer localizer = Main.getLocalizer();
@@ -118,12 +118,7 @@ public class InstallationManager {
         uiLogger.info(localizer.translate("MSG_TITLE_ADDON", addonName));
         logger.info("Creating addon: %s", addonName);
 
-        HttpURLConnection connection = ConnectionUtils.createGetConnection(addonUrl);
-        if (connection == null) {
-            throw new RuntimeException("An error occurred while trying to build a connection");
-        }
-
-        HttpFileDownload downloadFile = new HttpFileDownload(connection);
+        FileDownload downloadFile = new FileDownload(addonUrl);
         String downloadFileName = downloadFile.getFilename();
         if (downloadFileName == null) {
             throw new RuntimeException("Unable to resolve the filename");
@@ -203,12 +198,7 @@ public class InstallationManager {
         uiLogger.info(localizer.translate("MSG_TITLE_ADDON", patchName));
         logger.info("Creating patch: %s", patchName);
 
-        HttpURLConnection connection = ConnectionUtils.createGetConnection(patchUrl);
-        if (connection == null) {
-            throw new RuntimeException("An error occurred while trying to build a connection");
-        }
-
-        HttpFileDownload downloadFile = new HttpFileDownload(connection);
+        FileDownload downloadFile = new FileDownload(patchUrl);
         String downloadFileName = downloadFile.getFilename();
         if (downloadFileName == null) {
             throw new RuntimeException("Unable to resolve the filename");

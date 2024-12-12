@@ -4,7 +4,7 @@ import de.tosox.zonerelay.Main;
 import de.tosox.zonerelay.localizer.Localizer;
 import de.tosox.zonerelay.logger.Logger;
 import de.tosox.zonerelay.logger.UILogger;
-import de.tosox.zonerelay.manager.InstallationManager;
+import de.tosox.zonerelay.manager.InstallManager;
 import de.tosox.zonerelay.utils.Globals;
 
 import java.io.File;
@@ -17,7 +17,7 @@ public class MainFrameController {
     private final UILogger uiLogger = UILogger.getInstance();
     private final Localizer localizer = Main.getLocalizer();
 
-    private final InstallationManager installationManager = new InstallationManager();
+    private final InstallManager installManager = new InstallManager();
 
     public void onInstallClick() {
         if (Files.notExists(Paths.get(Globals.PATH_MO2_EXE))) {
@@ -32,7 +32,7 @@ public class MainFrameController {
             return;
         }
 
-        installationManager.startInstallation(Main.getMainFrame().isFullInstall());
+        installManager.startInstallation(Main.getMainFrame().isFullInstall());
     }
 
     public void onLaunchClick() {

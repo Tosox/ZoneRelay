@@ -24,4 +24,8 @@ public class Globals {
     public static final String PATH_7Z = "./resources/7zip/7z.exe";
     public static final String PATH_ADDON_META = "./resources/addon-meta.ini-template.txt";
     public static final String PATH_SEPARATOR_META = "./resources/separator-meta.ini-template.txt";
+
+    public static final String URL_NEXUS = "https://www.nexusmods.com";
+    public static final String URL_MODDB = "https://www.moddb.com";
+    public static final String URL_GITHUB = "https://www.github.com";
 }

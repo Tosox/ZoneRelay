@@ -2,7 +2,7 @@ addons:
   - name: Mod Configuration Menu
     url: https://www.moddb.com/mods/stalker-anomaly/addons/anomaly-mod-configuration-menu
     setup: [
-      'Anomaly-Mod-Configuration-Menu/gamedata'
+      'gamedata'
     ]
   - name: Food, Drug and Drink Animations
     url: https://github.com/Grokitach/anomaly_fdda/archive/refs/heads/main.zip

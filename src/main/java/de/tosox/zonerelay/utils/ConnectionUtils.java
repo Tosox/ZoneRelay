@@ -19,20 +19,4 @@ public class ConnectionUtils {
             return null;
         }
     }
-
-    public static HttpURLConnection createGetConnection(URL url) {
-        try {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                LOGGER.warn("Couldn't create connection: %d %s", connection.getResponseCode(), connection.getResponseMessage());
-                return null;
-            }
-            return connection;
-        } catch (Exception e) {
-            LOGGER.warn("Couldn't create connection: %s", e);
-            return null;
-        }
-    }
 }
