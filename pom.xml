@@ -117,7 +117,7 @@
                             <versionInfo>
                                 <fileVersion>${project.version}.0</fileVersion>
                                 <fileDescription>${project.name}</fileDescription>
-                                <copyright>2024 Tosox</copyright>
+                                <copyright>2025 Tosox</copyright>
                                 <productVersion>${project.version}.0</productVersion>
                                 <productName>${project.name}</productName>
                                 <companyName>Tosox</companyName>
