@@ -25,7 +25,7 @@ jobs:
       - name: Copy Artifact
         run: mkdir staging && cp -p target/*.jar staging && cp -p target/*.exe staging
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: zone-relay
           path: staging
