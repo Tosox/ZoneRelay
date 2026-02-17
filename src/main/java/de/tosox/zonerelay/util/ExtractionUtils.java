@@ -19,6 +19,8 @@ public class ExtractionUtils {
 	}
 
 	public void extract(File archive, Path destination) throws Exception {
+		logger.info("Extracting %s to %s", archive.getPath(), destination);
+
 		ProcessBuilder builder = new ProcessBuilder(
 				config.getSevenZipPath(), "-bso0",  "x", archive.getPath(), "-o" + destination.toString(), "-y"
 		);

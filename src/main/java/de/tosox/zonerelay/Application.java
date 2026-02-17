@@ -34,7 +34,7 @@ public class Application {
 
 		Localizer localizer;
 		try {
-			localizer = new Localizer(config, settings.getLanguage());
+			localizer = new Localizer(config, settings.getLanguage(), logManager.getFileLogger());
 		} catch (IOException e) {
 			crashHandler.fatal("An error occurred while trying to initialize the Localizer", e);
 			return; // unreachable
@@ -60,6 +60,7 @@ public class Application {
 
 		mainFrame.setController(mainFrameController);
 		logManager.getUiLogger().info(localizer.translate("MSG_WELCOME_MESSAGE", config.getAppName()));
+		logManager.getUiLogger().info("-------------------------------------------------------------------\n");
 	}
 
 	private InstallManager createInstallManager(AppConfig config, LogManager logManager, Localizer localizer) {

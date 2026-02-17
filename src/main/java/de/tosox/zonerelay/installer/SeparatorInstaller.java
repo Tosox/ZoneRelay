@@ -34,6 +34,9 @@ public class SeparatorInstaller implements ModInstaller {
 		progressListener.onProgressUpdate(0, 1);
 
 		Path modDir = Path.of(config.getMo2ModsDirectory()).resolve(separator.getName() + "_separator");
+
+		logManager.getUiLogger().info(localizer.translate("MSG_CREATE_SEPARATOR", modDir));
+		logManager.getFileLogger().info("Creating separator: %s", separator.getName());
 		Files.createDirectories(modDir);
 
 		metaIniService.generate(separator, modDir);

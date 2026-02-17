@@ -49,6 +49,9 @@ public class MainFrameController {
 			return;
 		}
 
+		logManager.getUiLogger().info(localizer.translate("MSG_READ_MODLIST_CFG"));
+		logManager.getFileLogger().info("Reading modlist configuration");
+
 		ConfigData configData;
 		try {
 			ConfigLoader configLoader = new ConfigLoader();

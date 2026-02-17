@@ -73,6 +73,7 @@ public class DownloadFilenameResolver {
 			URL parsed = new URL(url);
 			String path = parsed.getPath();
 			if (path == null || path.isEmpty()) {
+				logger.warn("URL path is empty: %s", url);
 				return null;
 			}
 

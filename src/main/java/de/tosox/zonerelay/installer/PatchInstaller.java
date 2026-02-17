@@ -41,7 +41,13 @@ public class PatchInstaller implements ModInstaller {
 
 		Path tempDir = Path.of(config.getTemporaryDirectory()).resolve(FilenameUtils.removeExtension(archive.getName()));
 		Files.createDirectories(tempDir);
+
+		logManager.getUiLogger().info(localizer.translate("MSG_EXTRACT_TO", tempDir));
+		logManager.getFileLogger().info("Extracting %s to %s", archive.getPath(), tempDir);
 		extractionUtils.extract(archive, tempDir);
+
+		logManager.getUiLogger().info(localizer.translate("MSG_READ_SETUP"));
+		logManager.getFileLogger().info("Reading setup instructions");
 
 		List<String> setup = patch.getSetup();
 		int total = setup.size();
@@ -51,6 +57,7 @@ public class PatchInstaller implements ModInstaller {
 			Path source = tempDir.resolve(instruction);
 			Path destination = mo2ConfigReader.getGamePath().resolve(source.getFileName());
 
+			logManager.getUiLogger().info(localizer.translate("MSG_COPY_TO", instruction, source.getFileName()));
 			logManager.getFileLogger().info("Copying %s → %s", source, destination);
 			FileUtils.copyDirectory(source.toFile(), destination.toFile());
 

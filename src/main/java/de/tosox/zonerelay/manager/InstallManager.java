@@ -117,6 +117,8 @@ public class InstallManager {
 
 			File archive = null;
 			if (entry instanceof Downloadable downloadable) {
+				logManager.getUiLogger().info(localizer.translate("MSG_DOWNLOADING_TO", entry.getName()));
+				logManager.getFileLogger().info("Downloading %s", downloadable.getUrl());
 				archive = downloadService.download(entry, downloadable.getUrl(), currentProgressListener);
 			}
 
@@ -134,8 +136,19 @@ public class InstallManager {
 		SplashImageService splashService = new SplashImageService(config);
 		ShortcutService shortcutService = new ShortcutService(config);
 
+		logManager.getUiLogger().info(localizer.translate("MSG_CREATE_CUSTOM_PROFILE"));
+		logManager.getFileLogger().info("Setting up MO2 profile");
 		profileService.setupProfile();
+
+		logManager.getUiLogger().info(localizer.translate("MSG_COPY", "modlist.txt"));
+		logManager.getFileLogger().info("Copying modlist.txt to profile");
+
+		logManager.getUiLogger().info(localizer.translate("MSG_COPY", "splash.png"));
+		logManager.getFileLogger().info("Copying splash image");
 		splashService.copySplashImage();
+
+		logManager.getUiLogger().info(localizer.translate("MSG_CREATE_SHORTCUT"));
+		logManager.getFileLogger().info("Creating desktop shortcut");
 		shortcutService.createShortcut();
 	}
 }

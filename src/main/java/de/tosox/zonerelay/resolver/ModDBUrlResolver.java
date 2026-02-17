@@ -24,25 +24,30 @@ public class ModDBUrlResolver implements UrlResolver {
 
 	@Override
 	public String resolve(String url) throws Exception {
-		Document addonPage = fetchPage(url);
-		Element downloadElem = addonPage.getElementById("downloadmirrorstoggle");
-		if (downloadElem == null) {
-			logger.error("Download element not found on ModDB page.");
-			return null;
+		try {
+			Document addonPage = fetchPage(url);
+			Element downloadElem = addonPage.getElementById("downloadmirrorstoggle");
+			if (downloadElem == null) {
+				logger.error("Download element not found on ModDB page.");
+				return null;
+			}
+
+			String relDownloadUrl = downloadElem.attr("href");
+			String downloadPageUrl = MODDB_URL + relDownloadUrl;
+			Document downloadPage = fetchPage(downloadPageUrl);
+
+			Element downloadLinkElement = downloadPage.selectFirst("a[href]");
+			if (downloadLinkElement == null) {
+				logger.error("Download link not found on ModDB download page.");
+				return null;
+			}
+
+			String relDownloadLink = downloadLinkElement.attr("href");
+			return MODDB_URL + relDownloadLink;
+		} catch (Exception e) {
+			logger.error("Error resolving ModDB download link: %s", e.getMessage());
+			throw e;
 		}
-
-		String relDownloadUrl = downloadElem.attr("href");
-		String downloadPageUrl = MODDB_URL + relDownloadUrl;
-		Document downloadPage = fetchPage(downloadPageUrl);
-
-		Element downloadLinkElement = downloadPage.selectFirst("a[href]");
-		if (downloadLinkElement == null) {
-			logger.error("Download link not found on ModDB download page.");
-			return null;
-		}
-
-		String relDownloadLink = downloadLinkElement.attr("href");
-		return MODDB_URL + relDownloadLink;
 	}
 
 	private Document fetchPage(String url) throws IOException {
