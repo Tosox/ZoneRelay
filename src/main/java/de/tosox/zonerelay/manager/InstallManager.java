@@ -10,10 +10,7 @@ import de.tosox.zonerelay.model.ConfigData;
 import de.tosox.zonerelay.model.ConfigEntry;
 import de.tosox.zonerelay.model.Downloadable;
 import de.tosox.zonerelay.model.EntryType;
-import de.tosox.zonerelay.service.ModDownloadService;
-import de.tosox.zonerelay.service.ProfileSetupService;
-import de.tosox.zonerelay.service.ShortcutService;
-import de.tosox.zonerelay.service.SplashImageService;
+import de.tosox.zonerelay.service.*;
 import de.tosox.zonerelay.util.ProgressListener;
 import lombok.Setter;
 
@@ -32,6 +29,7 @@ public class InstallManager {
 	private final ProfileSetupService profileSetupService;
 	private final SplashImageService splashImageService;
 	private final ShortcutService shortcutService;
+	private final InstallProgressStore progressStore;
 
 	private final AtomicBoolean isInstalling = new AtomicBoolean(false);
 
@@ -44,7 +42,8 @@ public class InstallManager {
 	@Inject
 	public InstallManager(LogManager logManager, Localizer localizer, InstallerFactory installerFactory,
 	                      ModDownloadService modDownloadService, ProfileSetupService profileSetupService,
-	                      SplashImageService splashImageService, ShortcutService shortcutService) {
+	                      SplashImageService splashImageService, ShortcutService shortcutService,
+	                      InstallProgressStore progressStore) {
 		this.logManager = logManager;
 		this.localizer = localizer;
 		this.installerFactory = installerFactory;
@@ -52,13 +51,14 @@ public class InstallManager {
 		this.profileSetupService = profileSetupService;
 		this.splashImageService = splashImageService;
 		this.shortcutService = shortcutService;
+		this.progressStore = progressStore;
 	}
 
-	public void startInstallation(ConfigData configData, boolean fullInstall) {
+	public void startInstallation(ConfigData configData, boolean fullInstall, String resumeFromId) {
 		Thread thread = new Thread(() -> {
 			isInstalling.set(true);
 			try {
-				runInstallation(configData, fullInstall);
+				runInstallation(configData, fullInstall, resumeFromId);
 			} catch (Exception e) {
 				logManager.getFileLogger().error("Failed to install mods: %s", e.getMessage());
 				throw new RuntimeException("Failed to install mods", e);
@@ -73,20 +73,21 @@ public class InstallManager {
 		return isInstalling.get();
 	}
 
-	private void runInstallation(ConfigData configData, boolean fullInstall) throws Exception {
+	private void runInstallation(ConfigData configData, boolean fullInstall, String resumeFromId) throws Exception {
 		currentProgressListener.onProgressUpdate(0, 1);
 		totalProgressListener.onProgressUpdate(0, 1);
 
 		int totalMods = configData.getAddons().size()
 				+ configData.getPatches().size() + 1; // Count all separators as "1"
 		AtomicInteger completedMods = new AtomicInteger(0);
+		AtomicBoolean resumePointFound = new AtomicBoolean(resumeFromId == null);
 
 		logManager.getUiLogger().info("\n=================================================================");
 		logManager.getUiLogger().info(localizer.translate("MSG_STARTING_INSTALLATION"));
 		logManager.getUiLogger().info("=================================================================");
-		installEntries(configData.getAddons(), fullInstall, totalMods, completedMods);
-		installEntries(configData.getPatches(), fullInstall, totalMods, completedMods);
-		installEntries(configData.getSeparators(), fullInstall, totalMods, completedMods);
+		installEntries(configData.getAddons(), fullInstall, totalMods, completedMods, resumeFromId, resumePointFound);
+		installEntries(configData.getPatches(), fullInstall, totalMods, completedMods, resumeFromId, resumePointFound);
+		installEntries(configData.getSeparators(), fullInstall, totalMods, completedMods, resumeFromId, resumePointFound);
 
 		logManager.getUiLogger().info("\n=================================================================");
 		logManager.getUiLogger().info(localizer.translate("MSG_INSTALLATION_MO2_SETUP"));
@@ -96,6 +97,7 @@ public class InstallManager {
 		logManager.getUiLogger().info("\n=================================================================");
 		logManager.getUiLogger().info(localizer.translate("MSG_INSTALLATION_CLEANUP"));
 		logManager.getUiLogger().info("=================================================================");
+		progressStore.clear();
 
 		logManager.getUiLogger().info(localizer.translate("MSG_COMPLETE_INSTALLATION"));
 		logManager.getFileLogger().info("Installation completed successfully");
@@ -105,21 +107,31 @@ public class InstallManager {
 	}
 
 	private void installEntries(List<? extends ConfigEntry> entries, boolean fullInstall,
-	                            int totalMods, AtomicInteger completedMods) throws Exception {
+	                            int totalMods, AtomicInteger completedMods,
+	                            String resumeFromId, AtomicBoolean resumePointFound) throws Exception {
 		if (entries == null || entries.isEmpty()) {
 			return;
 		}
 
 		// Sort Addons -> Patches -> Separators
-		entries.sort(Comparator.comparingInt((ConfigEntry e) -> {
-			return switch (e.getType()) {
-				case ADDON -> 0;
-				case PATCH -> 1;
-				case SEPARATOR -> 2;
-			};
+		entries.sort(Comparator.comparingInt((ConfigEntry e) -> switch (e.getType()) {
+			case ADDON -> 0;
+			case PATCH -> 1;
+			case SEPARATOR -> 2;
 		}));
 
 		for (ConfigEntry entry : entries) {
+			if (!resumePointFound.get()) {
+				if (!entry.getId().equals(resumeFromId)) {
+					if (entry.getType() != EntryType.SEPARATOR) {
+						completedMods.incrementAndGet();
+					}
+					continue;
+				}
+				resumePointFound.set(true);
+			}
+			progressStore.save(entry.getId());
+
 			logManager.getUiLogger().info(localizer.translate("MSG_TITLE_CONFIGENTRY",  entry.getName()));
 			logManager.getFileLogger().info("Installing entry: {0}", entry.getId());
 

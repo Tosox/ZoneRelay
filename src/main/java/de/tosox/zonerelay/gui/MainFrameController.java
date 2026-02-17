@@ -9,12 +9,16 @@ import de.tosox.zonerelay.localizer.Localizer;
 import de.tosox.zonerelay.logging.LogManager;
 import de.tosox.zonerelay.manager.InstallManager;
 import de.tosox.zonerelay.model.ConfigData;
+import de.tosox.zonerelay.model.ConfigEntry;
+import de.tosox.zonerelay.service.InstallProgressStore;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Stream;
 
 @Singleton
 public class MainFrameController {
@@ -22,14 +26,17 @@ public class MainFrameController {
 	private final LogManager logManager;
 	private final MainFrame mainFrame;
 	private final InstallManager installManager;
+	private final InstallProgressStore progressStore;
 
 	@Inject
 	public MainFrameController(Localizer localizer, LogManager logManager,
-	                           MainFrame mainFrame, InstallManager installManager) {
+	                           MainFrame mainFrame, InstallManager installManager,
+	                           InstallProgressStore progressStore) {
 		this.localizer = localizer;
 		this.logManager = logManager;
 		this.mainFrame = mainFrame;
 		this.installManager = installManager;
+		this.progressStore = progressStore;
 	}
 
 	public void onInstallClick() {
@@ -77,8 +84,10 @@ public class MainFrameController {
 				mainFrame.setTotalProgress(total <= 0 ? 0 : (int) (current * 100 / total))
 		);
 
+		String resumeFromId = promptForResume(configData);
+
 		try {
-			installManager.startInstallation(configData, mainFrame.isFullInstallSelected());
+			installManager.startInstallation(configData, mainFrame.isFullInstallSelected(), resumeFromId);
 		} catch (Exception e) {
 			logManager.getUiLogger().error(localizer.translate("ERR_INSTALLATION_FAILED"));
 			logManager.getFileLogger().error("Installation failed: " + e.getMessage());
@@ -98,5 +107,43 @@ public class MainFrameController {
 			logManager.getUiLogger().error(localizer.translate("ERR_LAUNCH_MO2_FAIL"));
 			logManager.getFileLogger().error("Failed to launch MO2: " + e.getMessage());
 		}
+	}
+
+	private String promptForResume(ConfigData configData) {
+		if (!progressStore.hasSavedState()) {
+			return null;
+		}
+
+		String savedId = progressStore.load();
+		if (savedId == null) {
+			return null;
+		}
+
+		String entryName = findEntryNameById(configData, savedId);
+		String displayName = (entryName != null) ? entryName : savedId;
+
+		int choice = JOptionPane.showConfirmDialog(
+				mainFrame,
+				localizer.translate("DLG_RESUME_MESSAGE", displayName),
+				localizer.translate("DLG_RESUME_TITLE"),
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE
+		);
+
+		if (choice == JOptionPane.YES_OPTION) {
+			return savedId;
+		}
+
+		progressStore.clear();
+		return null;
+	}
+
+	private String findEntryNameById(ConfigData configData, String id) {
+		return Stream.of(configData.getAddons(), configData.getPatches(), configData.getSeparators())
+				.flatMap(List::stream)
+				.filter(entry -> entry.getId().equals(id))
+				.map(ConfigEntry::getName)
+				.findFirst()
+				.orElse(null);
 	}
 }
