@@ -66,11 +66,15 @@ public class MainFrameController {
 			return;
 		}
 
-		installManager.setCurrentProgressListener((current, total) ->
-				mainFrame.setCurrentProgress((current * 100) / total)
-		);
+		installManager.setCurrentProgressListener((current, total) -> {
+			if (total <= 0) {
+				mainFrame.setCurrentProgressIndeterminate();
+			} else {
+				mainFrame.setCurrentProgress((int) (current * 100 / total));
+			}
+		});
 		installManager.setTotalProgressListener((current, total) ->
-				mainFrame.setTotalProgress((current * 100) / total)
+				mainFrame.setTotalProgress(total <= 0 ? 0 : (int) (current * 100 / total))
 		);
 
 		try {

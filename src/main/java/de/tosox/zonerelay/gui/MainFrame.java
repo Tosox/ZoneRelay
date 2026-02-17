@@ -60,7 +60,18 @@ public class MainFrame extends JFrame {
 	}
 
 	public void setCurrentProgress(int value) {
+		if (pgbCurrent.isIndeterminate()) {
+			pgbCurrent.setIndeterminate(false);
+			pgbCurrent.setString(null);
+		}
 		pgbCurrent.setValue(value);
+	}
+
+	public void setCurrentProgressIndeterminate() {
+		if (!pgbCurrent.isIndeterminate()) {
+			pgbCurrent.setIndeterminate(true);
+			pgbCurrent.setString(localizer.translate("GUI_DOWNLOADING"));
+		}
 	}
 
 	public void setTotalProgress(int value) {

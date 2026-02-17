@@ -5,6 +5,7 @@
   "GUI_LAUNCH_MO2": "Launch",
   "GUI_CURRENT_PROGRESS": "Current progress",
   "GUI_TOTAL_PROGRESS": "Total progress",
+  "GUI_DOWNLOADING": "Downloading...",
 
   "MSG_WELCOME_MESSAGE": "Welcome to {0}",
   "MSG_STARTING_INSTALLATION": "Starting installation",

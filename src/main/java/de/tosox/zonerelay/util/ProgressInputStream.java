@@ -24,7 +24,7 @@ public class ProgressInputStream extends FilterInputStream {
 		if (n > 0) {
 			bytesRead += n;
 			if (listener != null) {
-				listener.onProgressUpdate((int) bytesRead, (int) totalBytes);
+				listener.onProgressUpdate(bytesRead, totalBytes);
 			}
 		}
 		return n;
@@ -36,7 +36,7 @@ public class ProgressInputStream extends FilterInputStream {
 		if (n != -1) {
 			bytesRead++;
 			if (listener != null) {
-				listener.onProgressUpdate((int) bytesRead, (int) totalBytes);
+				listener.onProgressUpdate(bytesRead, totalBytes);
 			}
 		}
 		return n;
