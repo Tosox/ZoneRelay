@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.tosox</groupId>
-    <artifactId>zone-relay</artifactId>
+    <artifactId>zonerelay</artifactId>
     <version>0.1.0</version>
     <name>ZoneRelay</name>
 
@@ -11,6 +11,9 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <project.author>Tosox</project.author>
+        <project.build.year>2026</project.build.year>
     </properties>
 
     <dependencies>
@@ -128,10 +131,10 @@
                             <versionInfo>
                                 <fileVersion>${project.version}.0</fileVersion>
                                 <fileDescription>${project.name}</fileDescription>
-                                <copyright>2026 Tosox</copyright>
+                                <copyright>${project.build.year} ${project.author}</copyright>
                                 <productVersion>${project.version}.0</productVersion>
                                 <productName>${project.name}</productName>
-                                <companyName>Tosox</companyName>
+                                <companyName>${project.author}</companyName>
                                 <originalFilename>${project.name}-v${project.version}.exe</originalFilename>
                             </versionInfo>
                         </configuration>
