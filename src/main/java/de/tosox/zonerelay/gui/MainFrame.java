@@ -15,7 +15,6 @@ import java.awt.image.BufferedImage;
  */
 @Singleton
 public class MainFrame extends JFrame {
-	private final AppConfig config;
 	private final Localizer localizer;
 	private final ImageLoader imageLoader;
 	private final JTextPane txpOutput;
@@ -27,8 +26,7 @@ public class MainFrame extends JFrame {
 	private MainFrameController controller;
 
 	@Inject
-	public MainFrame(AppConfig config, Localizer localizer, ImageLoader imageLoader, JTextPane txpOutput) {
-		this.config = config;
+	public MainFrame(Localizer localizer, ImageLoader imageLoader, JTextPane txpOutput) {
 		this.localizer = localizer;
 		this.imageLoader = imageLoader;
 		this.txpOutput = txpOutput;
@@ -37,7 +35,7 @@ public class MainFrame extends JFrame {
 
 		initializeComponents();
 
-		this.setTitle(config.getAppName());
+		this.setTitle(AppConfig.APP_NAME);
 		this.setSize(800, 600);
 		this.setOpacity(0.9f);
 		this.setResizable(false);
@@ -94,7 +92,7 @@ public class MainFrame extends JFrame {
 				imgLogo.setBounds(10, 10, 160, 80);
 				pnlOptions.add(imgLogo);
 
-				JLabel lblVersion = new JLabel(localizer.translate("GUI_INSTALLER_VERSION", config.getAppVersion()), SwingConstants.CENTER);
+				JLabel lblVersion = new JLabel(localizer.translate("GUI_INSTALLER_VERSION", AppConfig.APP_VERSION), SwingConstants.CENTER);
 				lblVersion.setForeground(new Color(0xC2, 0xC2, 0xC2));
 				lblVersion.setBounds(10, 90, 160, 30);
 				pnlOptions.add(lblVersion);

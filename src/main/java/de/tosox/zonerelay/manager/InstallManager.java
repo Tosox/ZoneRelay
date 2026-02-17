@@ -2,7 +2,6 @@ package de.tosox.zonerelay.manager;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import de.tosox.zonerelay.AppConfig;
 import de.tosox.zonerelay.installer.InstallerFactory;
 import de.tosox.zonerelay.installer.ModInstaller;
 import de.tosox.zonerelay.localizer.Localizer;
@@ -26,7 +25,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class InstallManager {
-	private final AppConfig config;
 	private final LogManager logManager;
 	private final Localizer localizer;
 	private final InstallerFactory installerFactory;
@@ -44,11 +42,9 @@ public class InstallManager {
 	private ProgressListener totalProgressListener;
 
 	@Inject
-	public InstallManager(AppConfig config, LogManager logManager, Localizer localizer,
-	                      InstallerFactory installerFactory, ModDownloadService modDownloadService,
-	                      ProfileSetupService profileSetupService, SplashImageService splashImageService,
-	                      ShortcutService shortcutService) {
-		this.config = config;
+	public InstallManager(LogManager logManager, Localizer localizer, InstallerFactory installerFactory,
+	                      ModDownloadService modDownloadService, ProfileSetupService profileSetupService,
+	                      SplashImageService splashImageService, ShortcutService shortcutService) {
 		this.logManager = logManager;
 		this.localizer = localizer;
 		this.installerFactory = installerFactory;

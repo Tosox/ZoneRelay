@@ -17,15 +17,13 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class PatchInstaller implements ModInstaller {
-	private final AppConfig config;
 	private final LogManager logManager;
 	private final Localizer localizer;
 	private final ExtractionUtils extractionUtils;
 	private final MO2ConfigReader mo2ConfigReader;
 
-	public PatchInstaller(AppConfig config, LogManager logManager, Localizer localizer,
+	public PatchInstaller(LogManager logManager, Localizer localizer,
 	                      ExtractionUtils extractionUtils, MO2ConfigReader mo2ConfigReader) {
-		this.config = config;
 		this.logManager = logManager;
 		this.localizer = localizer;
 		this.extractionUtils = extractionUtils;
@@ -39,7 +37,7 @@ public class PatchInstaller implements ModInstaller {
 		}
 		progressListener.onProgressUpdate(0, 1);
 
-		Path tempDir = Path.of(config.getTemporaryDirectory()).resolve(FilenameUtils.removeExtension(archive.getName()));
+		Path tempDir = Path.of(AppConfig.TEMPORARY_DIRECTORY).resolve(FilenameUtils.removeExtension(archive.getName()));
 		Files.createDirectories(tempDir);
 
 		logManager.getUiLogger().info(localizer.translate("MSG_EXTRACT_TO", tempDir));

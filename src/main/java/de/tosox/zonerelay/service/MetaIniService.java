@@ -20,10 +20,10 @@ public class MetaIniService {
 	private final Path separatorMetaTemplate;
 
 	@Inject
-	public MetaIniService(AppConfig config, @Named("file") Logger logger) {
+	public MetaIniService(@Named("file") Logger logger) {
 		this.logger = logger;
-		this.addonMetaTemplate = Path.of(config.getAddonMetaPath());
-		this.separatorMetaTemplate = Path.of(config.getSeparatorMetaPath());
+		this.addonMetaTemplate = Path.of(AppConfig.ADDON_META_PATH);
+		this.separatorMetaTemplate = Path.of(AppConfig.SEPARATOR_META_PATH);
 	}
 
 	public void generate(ConfigEntry entry, Path targetDir) throws IOException {

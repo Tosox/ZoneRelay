@@ -14,18 +14,16 @@ import java.io.File;
 
 @Singleton
 public class ModDownloadService {
-	private final AppConfig config;
 	private final Logger logger;
 	private final DownloadStrategyFactory downloadStrategyFactory;
 	private final File downloadDirectory;
 
 	@Inject
-	public ModDownloadService(AppConfig config, @Named("file") Logger logger, DownloadStrategyFactory downloadStrategyFactory) {
-		this.config = config;
+	public ModDownloadService(@Named("file") Logger logger, DownloadStrategyFactory downloadStrategyFactory) {
 		this.logger = logger;
 		this.downloadStrategyFactory = downloadStrategyFactory;
 
-		this.downloadDirectory = new File(config.getDownloadsDirectory());
+		this.downloadDirectory = new File(AppConfig.DOWNLOADS_DIRECTORY);
 		if (!downloadDirectory.exists()) {
 			downloadDirectory.mkdirs();
 		}

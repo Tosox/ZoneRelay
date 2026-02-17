@@ -2,7 +2,6 @@ package de.tosox.zonerelay.installer;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import de.tosox.zonerelay.AppConfig;
 import de.tosox.zonerelay.config.MO2ConfigReader;
 import de.tosox.zonerelay.localizer.Localizer;
 import de.tosox.zonerelay.logging.LogManager;
@@ -12,7 +11,6 @@ import de.tosox.zonerelay.util.ExtractionUtils;
 
 @Singleton
 public class InstallerFactory {
-	private final AppConfig config;
 	private final LogManager logManager;
 	private final Localizer localizer;
 	private final ExtractionUtils extractionUtils;
@@ -20,9 +18,8 @@ public class InstallerFactory {
 	private final MetaIniService metaIniService;
 
 	@Inject
-	public InstallerFactory(AppConfig config, LogManager logManager, Localizer localizer, ExtractionUtils extractionUtils,
+	public InstallerFactory(LogManager logManager, Localizer localizer, ExtractionUtils extractionUtils,
 	                        MO2ConfigReader mo2ConfigReader, MetaIniService metaIniService) {
-		this.config = config;
 		this.logManager = logManager;
 		this.localizer = localizer;
 		this.extractionUtils = extractionUtils;
@@ -32,9 +29,9 @@ public class InstallerFactory {
 
 	public ModInstaller getInstaller(ConfigEntry entry) {
 		return switch (entry.getType()) {
-			case ADDON -> new AddonInstaller(config, logManager, localizer, extractionUtils, metaIniService);
-			case PATCH -> new PatchInstaller(config, logManager, localizer, extractionUtils, mo2ConfigReader);
-			case SEPARATOR -> new SeparatorInstaller(config, logManager, localizer, metaIniService);
+			case ADDON -> new AddonInstaller(logManager, localizer, extractionUtils, metaIniService);
+			case PATCH -> new PatchInstaller(logManager, localizer, extractionUtils, mo2ConfigReader);
+			case SEPARATOR -> new SeparatorInstaller(logManager, localizer, metaIniService);
 		};
 	}
 }

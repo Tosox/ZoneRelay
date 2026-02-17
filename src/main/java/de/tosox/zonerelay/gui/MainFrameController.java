@@ -18,16 +18,14 @@ import java.nio.file.Paths;
 
 @Singleton
 public class MainFrameController {
-	private final AppConfig config;
 	private final Localizer localizer;
 	private final LogManager logManager;
 	private final MainFrame mainFrame;
 	private final InstallManager installManager;
 
 	@Inject
-	public MainFrameController(AppConfig config, Localizer localizer,
-	                           LogManager logManager, MainFrame mainFrame, InstallManager installManager) {
-		this.config = config;
+	public MainFrameController(Localizer localizer, LogManager logManager,
+	                           MainFrame mainFrame, InstallManager installManager) {
 		this.localizer = localizer;
 		this.logManager = logManager;
 		this.mainFrame = mainFrame;
@@ -41,13 +39,13 @@ public class MainFrameController {
 			return;
 		}
 
-		if (Files.notExists(Paths.get(config.getMo2ExePath()))) {
+		if (Files.notExists(Paths.get(AppConfig.MO2_EXE_PATH))) {
 			logManager.getUiLogger().warn(localizer.translate("ERR_INVALID_INSTALL_DIR"));
 			logManager.getFileLogger().warn("Please move the installer into the MO2 directory");
 			return;
 		}
 
-		if (Files.notExists(Paths.get(config.getMo2ConfigPath()))) {
+		if (Files.notExists(Paths.get(AppConfig.MO2_CONFIG_PATH))) {
 			logManager.getUiLogger().warn(localizer.translate("ERR_LAUNCH_MO2"));
 			logManager.getFileLogger().warn("Please launch MO2 once first");
 			return;
@@ -60,7 +58,7 @@ public class MainFrameController {
 		try {
 			ConfigLoader configLoader = new ConfigLoader();
 			ConfigValidator configValidator = new ConfigValidator();
-			configData = configLoader.load(new File(config.getModlistConfigPath()));
+			configData = configLoader.load(new File(AppConfig.MODLIST_CONFIG_PATH));
 			configValidator.validate(configData);
 		} catch (Exception e) {
 			logManager.getUiLogger().error(localizer.translate("ERR_CONFIG_INVALID"));
@@ -84,14 +82,14 @@ public class MainFrameController {
 	}
 
 	public void onLaunchClick() {
-		if (Files.notExists(Paths.get(config.getMo2ExePath()))) {
+		if (Files.notExists(Paths.get(AppConfig.MO2_EXE_PATH))) {
 			logManager.getUiLogger().warn(localizer.translate("ERR_INVALID_INSTALL_DIR"));
 			logManager.getFileLogger().warn("Please move the installer into the MO2 directory");
 			return;
 		}
 
 		try {
-			Runtime.getRuntime().exec(config.getMo2ExePath(), null, new File(config.getMo2Directory()));
+			Runtime.getRuntime().exec(AppConfig.MO2_EXE_PATH, null, new File(AppConfig.MO2_DIRECTORY));
 		} catch (IOException e) {
 			logManager.getUiLogger().error(localizer.translate("ERR_LAUNCH_MO2_FAIL"));
 			logManager.getFileLogger().error("Failed to launch MO2: " + e.getMessage());

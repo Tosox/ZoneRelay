@@ -13,14 +13,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class SeparatorInstaller implements ModInstaller {
-	private final AppConfig config;
 	private final LogManager logManager;
 	private final Localizer localizer;
 	private final MetaIniService metaIniService;
 
-	public SeparatorInstaller(AppConfig config, LogManager logManager,
+	public SeparatorInstaller(LogManager logManager,
 	                          Localizer localizer, MetaIniService metaIniService) {
-		this.config = config;
 		this.logManager = logManager;
 		this.localizer = localizer;
 		this.metaIniService = metaIniService;
@@ -33,7 +31,7 @@ public class SeparatorInstaller implements ModInstaller {
 		}
 		progressListener.onProgressUpdate(0, 1);
 
-		Path modDir = Path.of(config.getMo2ModsDirectory()).resolve(separator.getName() + "_separator");
+		Path modDir = Path.of(AppConfig.MO2_MODS_DIRECTORY).resolve(separator.getName() + "_separator");
 
 		logManager.getUiLogger().info(localizer.translate("MSG_CREATE_SEPARATOR", modDir));
 		logManager.getFileLogger().info("Creating separator: %s", separator.getName());

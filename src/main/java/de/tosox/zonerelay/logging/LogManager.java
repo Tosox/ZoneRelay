@@ -16,8 +16,8 @@ public class LogManager {
 	private final Logger fileLogger;
 	private final Logger uiLogger;
 
-	public LogManager(AppConfig config, JTextPane outputPane) {
-		this.logFolder = createRunLogFolder(Path.of(config.getLogsDirectory()));
+	public LogManager(JTextPane outputPane) {
+		this.logFolder = createRunLogFolder(Path.of(AppConfig.LOGS_DIRECTORY));
 
 		this.fileLogger = new FileLogger(logFolder.resolve("app.log"), LogLevel.INFO);
 		this.uiLogger = new UILogger(outputPane);

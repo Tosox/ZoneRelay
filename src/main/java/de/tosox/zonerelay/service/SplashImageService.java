@@ -1,6 +1,5 @@
 package de.tosox.zonerelay.service;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.tosox.zonerelay.AppConfig;
 
@@ -11,16 +10,10 @@ import java.nio.file.StandardCopyOption;
 
 @Singleton
 public class SplashImageService {
-	private final AppConfig config;
-
-	@Inject
-	public SplashImageService(AppConfig config) {
-		this.config = config;
-	}
 
 	public void copySplashImage() {
-		Path splashImage = Path.of(config.getModlistSplashPath());
-		Path mo2DirSplash = Path.of(config.getMo2Directory(), "splash.png");
+		Path splashImage = Path.of(AppConfig.MODLIST_SPLASH_PATH);
+		Path mo2DirSplash = Path.of(AppConfig.MO2_DIRECTORY, "splash.png");
 
 		if (Files.exists(splashImage)) {
 			try {

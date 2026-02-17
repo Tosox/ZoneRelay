@@ -17,10 +17,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class ApplicationModule extends AbstractModule {
-	@Override
-	protected void configure() {
-		bind(AppConfig.class).in(Singleton.class);
-	}
 
 	@Provides
 	@Singleton
@@ -30,8 +26,8 @@ public class ApplicationModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	LogManager provideLogManager(AppConfig config, JTextPane outputPane) {
-		return new LogManager(config, outputPane);
+	LogManager provideLogManager(JTextPane outputPane) {
+		return new LogManager(outputPane);
 	}
 
 	@Provides
@@ -56,15 +52,14 @@ public class ApplicationModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	Localizer provideLocalizer(AppConfig config, UserSettings settings,
-	                           @Named("file") Logger logger) throws IOException {
-		return new Localizer(config, settings.getLanguage(), logger);
+	Localizer provideLocalizer(UserSettings settings, @Named("file") Logger logger) throws IOException {
+		return new Localizer(settings.getLanguage(), logger);
 	}
 
 	@Provides
 	@Singleton
-	MO2ConfigReader provideMO2ConfigReader(AppConfig config) {
-		return new MO2ConfigReader(Path.of(config.getMo2ConfigPath()));
+	MO2ConfigReader provideMO2ConfigReader() {
+		return new MO2ConfigReader(Path.of(AppConfig.MO2_CONFIG_PATH));
 	}
 
 	@Provides

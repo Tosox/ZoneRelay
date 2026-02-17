@@ -18,9 +18,9 @@ public class Localizer {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final Logger logger;
 
-	public Localizer(AppConfig config, String languageCode, Logger logger) throws IOException {
+	public Localizer(String languageCode, Logger logger) throws IOException {
 		this.logger = logger;
-		loadLocale(Path.of(config.getLocalesDirectory()), languageCode);
+		loadLocale(Path.of(AppConfig.LOCALES_DIRECTORY), languageCode);
 	}
 
 	private void loadLocale(Path localeDir, String languageCode) throws IOException {

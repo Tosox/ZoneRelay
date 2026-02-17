@@ -17,15 +17,13 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class AddonInstaller implements ModInstaller {
-	private final AppConfig config;
 	private final LogManager logManager;
 	private final Localizer localizer;
 	private final ExtractionUtils extractionUtils;
 	private final MetaIniService metaIniService;
 
-	public AddonInstaller(AppConfig config, LogManager logManager, Localizer localizer,
+	public AddonInstaller(LogManager logManager, Localizer localizer,
 	                      ExtractionUtils extractionUtils, MetaIniService metaIniService) {
-		this.config = config;
 		this.logManager = logManager;
 		this.localizer = localizer;
 		this.extractionUtils = extractionUtils;
@@ -39,14 +37,14 @@ public class AddonInstaller implements ModInstaller {
 		}
 		progressListener.onProgressUpdate(0, 1);
 
-		Path tempDir = Path.of(config.getTemporaryDirectory()).resolve(FilenameUtils.removeExtension(archive.getName()));
+		Path tempDir = Path.of(AppConfig.TEMPORARY_DIRECTORY).resolve(FilenameUtils.removeExtension(archive.getName()));
 		Files.createDirectories(tempDir);
 
 		logManager.getUiLogger().info(localizer.translate("MSG_EXTRACT_TO", tempDir));
 		logManager.getFileLogger().info("Extracting %s to %s", archive.getPath(), tempDir);
 		extractionUtils.extract(archive, tempDir);
 
-		Path modTargetDir = Path.of(config.getMo2ModsDirectory()).resolve(addon.getName());
+		Path modTargetDir = Path.of(AppConfig.MO2_MODS_DIRECTORY).resolve(addon.getName());
 
 		logManager.getUiLogger().info(localizer.translate("MSG_READ_SETUP"));
 		logManager.getFileLogger().info("Reading setup instructions");

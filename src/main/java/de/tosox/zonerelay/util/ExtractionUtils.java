@@ -14,12 +14,10 @@ import java.nio.file.Path;
 
 @Singleton
 public class ExtractionUtils {
-	private final AppConfig config;
 	private final Logger logger;
 
 	@Inject
-	public ExtractionUtils(AppConfig config, @Named("file") Logger logger) {
-		this.config = config;
+	public ExtractionUtils(@Named("file") Logger logger) {
 		this.logger = logger;
 	}
 
@@ -27,7 +25,7 @@ public class ExtractionUtils {
 		logger.info("Extracting %s to %s", archive.getPath(), destination);
 
 		ProcessBuilder builder = new ProcessBuilder(
-				config.getSevenZipPath(), "-bso0",  "x", archive.getPath(), "-o" + destination.toString(), "-y"
+				AppConfig.SEVEN_ZIP_PATH, "-bso0",  "x", archive.getPath(), "-o" + destination.toString(), "-y"
 		);
 		builder.redirectErrorStream(true);
 		Process process = builder.start();

@@ -15,9 +15,8 @@ public class Application {
 
 		LogManager logManager = injector.getInstance(LogManager.class);
 		Localizer localizer = injector.getInstance(Localizer.class);
-		AppConfig config = injector.getInstance(AppConfig.class);
 
-		logManager.getUiLogger().info(localizer.translate("MSG_WELCOME_MESSAGE", config.getAppName()));
+		logManager.getUiLogger().info(localizer.translate("MSG_WELCOME_MESSAGE", AppConfig.APP_NAME));
 		logManager.getUiLogger().info("-------------------------------------------------------------------\n");
 	}
 
