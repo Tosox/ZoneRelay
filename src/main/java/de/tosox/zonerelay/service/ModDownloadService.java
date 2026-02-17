@@ -1,5 +1,8 @@
 package de.tosox.zonerelay.service;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import de.tosox.zonerelay.AppConfig;
 import de.tosox.zonerelay.downloader.DownloadStrategy;
 import de.tosox.zonerelay.downloader.DownloadStrategyFactory;
@@ -9,13 +12,15 @@ import de.tosox.zonerelay.util.ProgressListener;
 
 import java.io.File;
 
+@Singleton
 public class ModDownloadService {
 	private final AppConfig config;
 	private final Logger logger;
 	private final DownloadStrategyFactory downloadStrategyFactory;
 	private final File downloadDirectory;
 
-	public ModDownloadService(AppConfig config, Logger logger, DownloadStrategyFactory downloadStrategyFactory) {
+	@Inject
+	public ModDownloadService(AppConfig config, @Named("file") Logger logger, DownloadStrategyFactory downloadStrategyFactory) {
 		this.config = config;
 		this.logger = logger;
 		this.downloadStrategyFactory = downloadStrategyFactory;

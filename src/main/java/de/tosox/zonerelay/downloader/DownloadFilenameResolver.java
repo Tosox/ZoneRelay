@@ -1,5 +1,8 @@
 package de.tosox.zonerelay.downloader;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import de.tosox.zonerelay.logging.Logger;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -11,6 +14,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Singleton
 public class DownloadFilenameResolver {
 	private static final Pattern FILENAME_FROM_CONTENT_DISPOSITION =
 			Pattern.compile("filename\\*?=['\"]?(?:UTF-\\d['\"]*)?([^;\"']*)['\"]?;?");
@@ -18,7 +22,8 @@ public class DownloadFilenameResolver {
 
 	private final Logger logger;
 
-	public DownloadFilenameResolver(Logger logger) {
+	@Inject
+	public DownloadFilenameResolver(@Named("file") Logger logger) {
 		this.logger = logger;
 	}
 

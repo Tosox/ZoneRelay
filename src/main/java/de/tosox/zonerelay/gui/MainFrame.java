@@ -1,9 +1,10 @@
 package de.tosox.zonerelay.gui;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import de.tosox.zonerelay.AppConfig;
 import de.tosox.zonerelay.localizer.Localizer;
 import de.tosox.zonerelay.util.ImageLoader;
-import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +13,7 @@ import java.awt.image.BufferedImage;
 /**
  * The {@code MainFrame} class represents the main application window.
  */
+@Singleton
 public class MainFrame extends JFrame {
 	private final AppConfig config;
 	private final Localizer localizer;
@@ -22,9 +24,9 @@ public class MainFrame extends JFrame {
 	private JProgressBar pgbCurrent = new JProgressBar();
 	private JProgressBar pgbTotal = new JProgressBar();
 
-	@Setter
 	private MainFrameController controller;
 
+	@Inject
 	public MainFrame(AppConfig config, Localizer localizer, ImageLoader imageLoader, JTextPane txpOutput) {
 		this.config = config;
 		this.localizer = localizer;
@@ -41,6 +43,11 @@ public class MainFrame extends JFrame {
 		this.setResizable(false);
 		this.setIconImage(icon);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	@Inject
+	public void setController(MainFrameController controller) {
+		this.controller = controller;
 	}
 
 	/**

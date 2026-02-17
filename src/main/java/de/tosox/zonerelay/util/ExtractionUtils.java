@@ -1,5 +1,8 @@
 package de.tosox.zonerelay.util;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import de.tosox.zonerelay.AppConfig;
 import de.tosox.zonerelay.logging.Logger;
 
@@ -9,11 +12,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 
+@Singleton
 public class ExtractionUtils {
 	private final AppConfig config;
 	private final Logger logger;
 
-	public ExtractionUtils(AppConfig config, Logger logger) {
+	@Inject
+	public ExtractionUtils(AppConfig config, @Named("file") Logger logger) {
 		this.config = config;
 		this.logger = logger;
 	}

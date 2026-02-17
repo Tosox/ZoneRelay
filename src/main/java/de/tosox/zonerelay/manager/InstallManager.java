@@ -1,5 +1,7 @@
 package de.tosox.zonerelay.manager;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import de.tosox.zonerelay.AppConfig;
 import de.tosox.zonerelay.installer.InstallerFactory;
 import de.tosox.zonerelay.installer.ModInstaller;
@@ -22,12 +24,16 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Singleton
 public class InstallManager {
 	private final AppConfig config;
 	private final LogManager logManager;
 	private final Localizer localizer;
 	private final InstallerFactory installerFactory;
 	private final ModDownloadService downloadService;
+	private final ProfileSetupService profileSetupService;
+	private final SplashImageService splashImageService;
+	private final ShortcutService shortcutService;
 
 	private final AtomicBoolean isInstalling = new AtomicBoolean(false);
 
@@ -37,13 +43,19 @@ public class InstallManager {
 	@Setter
 	private ProgressListener totalProgressListener;
 
+	@Inject
 	public InstallManager(AppConfig config, LogManager logManager, Localizer localizer,
-	                      InstallerFactory installerFactory, ModDownloadService modDownloadService) {
+	                      InstallerFactory installerFactory, ModDownloadService modDownloadService,
+	                      ProfileSetupService profileSetupService, SplashImageService splashImageService,
+	                      ShortcutService shortcutService) {
 		this.config = config;
 		this.logManager = logManager;
 		this.localizer = localizer;
 		this.installerFactory = installerFactory;
 		this.downloadService = modDownloadService;
+		this.profileSetupService = profileSetupService;
+		this.splashImageService = splashImageService;
+		this.shortcutService = shortcutService;
 	}
 
 	public void startInstallation(ConfigData configData, boolean fullInstall) {
@@ -132,20 +144,16 @@ public class InstallManager {
 	}
 
 	private void setupMo2Environment() {
-		ProfileSetupService profileService = new ProfileSetupService(config);
-		SplashImageService splashService = new SplashImageService(config);
-		ShortcutService shortcutService = new ShortcutService(config);
-
 		logManager.getUiLogger().info(localizer.translate("MSG_CREATE_CUSTOM_PROFILE"));
 		logManager.getFileLogger().info("Setting up MO2 profile");
-		profileService.setupProfile();
+		profileSetupService.setupProfile();
 
 		logManager.getUiLogger().info(localizer.translate("MSG_COPY", "modlist.txt"));
 		logManager.getFileLogger().info("Copying modlist.txt to profile");
 
 		logManager.getUiLogger().info(localizer.translate("MSG_COPY", "splash.png"));
 		logManager.getFileLogger().info("Copying splash image");
-		splashService.copySplashImage();
+		splashImageService.copySplashImage();
 
 		logManager.getUiLogger().info(localizer.translate("MSG_CREATE_SHORTCUT"));
 		logManager.getFileLogger().info("Creating desktop shortcut");

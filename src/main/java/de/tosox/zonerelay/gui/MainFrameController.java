@@ -1,5 +1,7 @@
 package de.tosox.zonerelay.gui;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import de.tosox.zonerelay.AppConfig;
 import de.tosox.zonerelay.config.ConfigLoader;
 import de.tosox.zonerelay.config.ConfigValidator;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@Singleton
 public class MainFrameController {
 	private final AppConfig config;
 	private final Localizer localizer;
@@ -21,6 +24,7 @@ public class MainFrameController {
 	private final MainFrame mainFrame;
 	private final InstallManager installManager;
 
+	@Inject
 	public MainFrameController(AppConfig config, Localizer localizer,
 	                           LogManager logManager, MainFrame mainFrame, InstallManager installManager) {
 		this.config = config;

@@ -1,5 +1,8 @@
 package de.tosox.zonerelay.service;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import de.tosox.zonerelay.AppConfig;
 import de.tosox.zonerelay.logging.Logger;
 import de.tosox.zonerelay.model.Addon;
@@ -10,12 +13,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+@Singleton
 public class MetaIniService {
 	private final Logger logger;
 	private final Path addonMetaTemplate;
 	private final Path separatorMetaTemplate;
 
-	public MetaIniService(AppConfig config, Logger logger) {
+	@Inject
+	public MetaIniService(AppConfig config, @Named("file") Logger logger) {
 		this.logger = logger;
 		this.addonMetaTemplate = Path.of(config.getAddonMetaPath());
 		this.separatorMetaTemplate = Path.of(config.getSeparatorMetaPath());

@@ -1,15 +1,20 @@
 package de.tosox.zonerelay.handler;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import de.tosox.zonerelay.logging.Logger;
 
 import javax.swing.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+@Singleton
 public class CrashHandler {
 	private final Logger logger;
 
-	public CrashHandler(Logger logger) {
+	@Inject
+	public CrashHandler(@Named("file") Logger logger) {
 		this.logger = logger;
 	}
 
