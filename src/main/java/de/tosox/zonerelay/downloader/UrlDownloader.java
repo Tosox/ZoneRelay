@@ -2,7 +2,7 @@ package de.tosox.zonerelay.downloader;
 
 import de.tosox.zonerelay.logging.Logger;
 import de.tosox.zonerelay.model.ConfigEntry;
-import de.tosox.zonerelay.model.Downloadable;
+import de.tosox.zonerelay.model.Mod;
 import de.tosox.zonerelay.resolver.UrlResolver;
 import de.tosox.zonerelay.resolver.UrlResolverFactory;
 import de.tosox.zonerelay.util.ProgressInputStream;
@@ -34,12 +34,12 @@ public class UrlDownloader implements DownloadStrategy {
 
 	@Override
 	public File download(ConfigEntry entry, Path destination, ProgressListener listener) throws Exception {
-		if (!(entry instanceof Downloadable downloadable)) {
-			throw new IllegalArgumentException("Expected Downloadable, got " + entry.getClass().getSimpleName());
+		if (!(entry instanceof Mod mod)) {
+			throw new IllegalArgumentException("Expected Mod, got " + entry.getClass().getSimpleName());
 		}
 
-		UrlResolver resolver = urlResolverFactory.getResolver(downloadable.getUrl());
-		String directUrl = resolver.resolve(downloadable.getUrl());
+		UrlResolver resolver = urlResolverFactory.getResolver(mod.getUrl());
+		String directUrl = resolver.resolve(mod.getUrl());
 
 		String filename = filenameResolver.resolve(directUrl);
 		File archive = destination.resolve(filename).toFile();

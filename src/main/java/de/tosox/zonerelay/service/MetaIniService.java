@@ -5,8 +5,8 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import de.tosox.zonerelay.AppConfig;
 import de.tosox.zonerelay.logging.Logger;
-import de.tosox.zonerelay.model.Addon;
 import de.tosox.zonerelay.model.ConfigEntry;
+import de.tosox.zonerelay.model.Mod;
 import de.tosox.zonerelay.model.Separator;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class MetaIniService {
 	public void generate(ConfigEntry entry, Path targetDir) throws IOException {
 		String content;
 
-		if (entry instanceof Addon) {
+		if (entry instanceof Mod) {
 			content = fillTemplate(entry, addonMetaTemplate);
 		} else if (entry instanceof Separator) {
 			content = fillTemplate(entry, separatorMetaTemplate);

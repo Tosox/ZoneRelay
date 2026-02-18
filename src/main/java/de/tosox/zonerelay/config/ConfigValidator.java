@@ -12,7 +12,7 @@ public class ConfigValidator {
 	public void validate(ConfigData configData) {
 		Set<String> seenIds = new HashSet<>();
 
-		validateEntries(configData.getAddons(), seenIds);
+		validateEntries(configData.getMods(), seenIds);
 		validateEntries(configData.getPatches(), seenIds);
 		validateEntries(configData.getSeparators(), seenIds);
 	}
@@ -34,16 +34,11 @@ public class ConfigValidator {
 			throw new IllegalArgumentException("Duplicate id found: " + entry.getId());
 		}
 
-		if (entry instanceof Addon addon) {
-			if (addon.getName() == null || addon.getName().isBlank()) {
-				throw new IllegalArgumentException("Addon missing name: " + addon.getId());
+		if (entry instanceof Mod mod) {
+			if (mod.getName() == null || mod.getName().isBlank()) {
+				throw new IllegalArgumentException("Mod missing name: " + mod.getId());
 			}
-			validateUrl(addon.getUrl(), addon.getId());
-		} else if (entry instanceof Patch patch) {
-			if (patch.getName() == null || patch.getName().isBlank()) {
-				throw new IllegalArgumentException("Patch missing name: " + patch.getId());
-			}
-			validateUrl(patch.getUrl(), patch.getId());
+			validateUrl(mod.getUrl(), mod.getId());
 		} else if (entry instanceof Separator separator) {
 			if (separator.getName() == null || separator.getName().isBlank()) {
 				throw new IllegalArgumentException("Separator missing name: " + separator.getId());

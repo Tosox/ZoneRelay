@@ -8,8 +8,8 @@ import de.tosox.zonerelay.localizer.Localizer;
 import de.tosox.zonerelay.logging.LogManager;
 import de.tosox.zonerelay.model.ConfigData;
 import de.tosox.zonerelay.model.ConfigEntry;
-import de.tosox.zonerelay.model.Downloadable;
 import de.tosox.zonerelay.model.EntryType;
+import de.tosox.zonerelay.model.Mod;
 import de.tosox.zonerelay.service.*;
 import de.tosox.zonerelay.util.ProgressListener;
 import lombok.Setter;
@@ -77,7 +77,7 @@ public class InstallManager {
 		currentProgressListener.onProgressUpdate(0, 1);
 		totalProgressListener.onProgressUpdate(0, 1);
 
-		int totalMods = configData.getAddons().size()
+		int totalMods = configData.getMods().size()
 				+ configData.getPatches().size() + 1; // Count all separators as "1"
 		AtomicInteger completedMods = new AtomicInteger(0);
 		AtomicBoolean resumePointFound = new AtomicBoolean(resumeFromId == null);
@@ -85,7 +85,7 @@ public class InstallManager {
 		logManager.getUiLogger().info("\n=================================================================");
 		logManager.getUiLogger().info(localizer.translate("MSG_STARTING_INSTALLATION"));
 		logManager.getUiLogger().info("=================================================================");
-		installEntries(configData.getAddons(), fullInstall, totalMods, completedMods, resumeFromId, resumePointFound);
+		installEntries(configData.getMods(), fullInstall, totalMods, completedMods, resumeFromId, resumePointFound);
 		installEntries(configData.getPatches(), fullInstall, totalMods, completedMods, resumeFromId, resumePointFound);
 		installEntries(configData.getSeparators(), fullInstall, totalMods, completedMods, resumeFromId, resumePointFound);
 
@@ -113,9 +113,9 @@ public class InstallManager {
 			return;
 		}
 
-		// Sort Addons -> Patches -> Separators
+		// Sort Mods -> Patches -> Separators
 		entries.sort(Comparator.comparingInt((ConfigEntry e) -> switch (e.getType()) {
-			case ADDON -> 0;
+			case MOD -> 0;
 			case PATCH -> 1;
 			case SEPARATOR -> 2;
 		}));
@@ -136,10 +136,10 @@ public class InstallManager {
 			logManager.getFileLogger().info("Installing entry: {0}", entry.getId());
 
 			File archive = null;
-			if (entry instanceof Downloadable downloadable) {
+			if (entry instanceof Mod mod) {
 				logManager.getUiLogger().info(localizer.translate("MSG_DOWNLOADING_TO", entry.getName()));
-				logManager.getFileLogger().info("Downloading %s", downloadable.getUrl());
-				archive = downloadService.download(entry, downloadable.getUrl(), currentProgressListener);
+				logManager.getFileLogger().info("Downloading %s", mod.getUrl());
+				archive = downloadService.download(entry, mod.getUrl(), currentProgressListener);
 			}
 
 			ModInstaller installer = installerFactory.getInstaller(entry);

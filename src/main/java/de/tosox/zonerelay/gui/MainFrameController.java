@@ -139,7 +139,7 @@ public class MainFrameController {
 	}
 
 	private String findEntryNameById(ConfigData configData, String id) {
-		return Stream.of(configData.getAddons(), configData.getPatches(), configData.getSeparators())
+		return Stream.of(configData.getMods(), configData.getPatches(), configData.getSeparators())
 				.flatMap(List::stream)
 				.filter(entry -> entry.getId().equals(id))
 				.map(ConfigEntry::getName)

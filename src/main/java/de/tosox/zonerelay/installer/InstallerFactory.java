@@ -29,8 +29,7 @@ public class InstallerFactory {
 
 	public ModInstaller getInstaller(ConfigEntry entry) {
 		return switch (entry.getType()) {
-			case ADDON -> new AddonInstaller(logManager, localizer, extractionUtils, metaIniService);
-			case PATCH -> new PatchInstaller(logManager, localizer, extractionUtils, mo2ConfigReader);
+			case MOD, PATCH -> new ModEntryInstaller(logManager, localizer, extractionUtils, metaIniService, mo2ConfigReader);
 			case SEPARATOR -> new SeparatorInstaller(logManager, localizer, metaIniService);
 		};
 	}
