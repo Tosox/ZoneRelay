@@ -4,24 +4,18 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import de.tosox.zonerelay.logging.Logger;
-import de.tosox.zonerelay.resolver.UrlResolverFactory;
 
 @Singleton
 public class DownloadStrategyFactory {
 	private final Logger logger;
-	private final UrlResolverFactory urlResolverFactory;
-	private final DownloadFilenameResolver filenameResolver;
 
 	@Inject
-	public DownloadStrategyFactory(@Named("file") Logger logger, UrlResolverFactory urlResolverFactory,
-	                               DownloadFilenameResolver filenameResolver) {
+	public DownloadStrategyFactory(@Named("file") Logger logger) {
 		this.logger = logger;
-		this.urlResolverFactory = urlResolverFactory;
-		this.filenameResolver = filenameResolver;
 	}
 
 	public DownloadStrategy getStrategy(String url) {
 		// TODO: GitHub cloning?
-		return new UrlDownloader(logger, urlResolverFactory, filenameResolver);
+		return new UrlDownloader(logger);
 	}
 }

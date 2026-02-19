@@ -137,9 +137,7 @@ public class InstallManager {
 
 			File archive = null;
 			if (entry instanceof Mod mod) {
-				logManager.getUiLogger().info(localizer.translate("MSG_DOWNLOADING_TO", entry.getName()));
-				logManager.getFileLogger().info("Downloading %s", mod.getUrl());
-				archive = downloadService.download(entry, mod.getUrl(), currentProgressListener);
+				archive = downloadService.download(mod.getUrl(), currentProgressListener);
 			}
 
 			ModInstaller installer = installerFactory.getInstaller(entry);

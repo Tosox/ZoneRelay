@@ -42,19 +42,25 @@ public class ModEntryInstaller implements ModInstaller {
 		}
 		progressListener.onProgressUpdate(0, 1);
 
-		Path tempDir = Path.of(AppConfig.TEMPORARY_DIRECTORY).resolve(FilenameUtils.removeExtension(archive.getName()));
-		Files.createDirectories(tempDir);
-
-		logManager.getUiLogger().info(localizer.translate("MSG_EXTRACT_TO", tempDir));
-		logManager.getFileLogger().info("Extracting %s to %s", archive.getPath(), tempDir);
-		extractionUtils.extract(archive, tempDir);
-
 		Path targetDir;
 		if (mod.getType() == EntryType.MOD) {
 			targetDir = Path.of(AppConfig.MO2_MODS_DIRECTORY).resolve(mod.getName());
 		} else {
 			targetDir = mo2ConfigReader.getGamePath();
 		}
+
+		if (mod.getType() == EntryType.MOD) {
+			logManager.getUiLogger().info(localizer.translate("MSG_ADDON_DELETE_OLD_VERSION"));
+			logManager.getFileLogger().info("Deleting previous version in %s", targetDir);
+			FileUtils.deleteDirectory(targetDir.toFile());
+		}
+
+		Path tempDir = Path.of(AppConfig.TEMPORARY_DIRECTORY).resolve(FilenameUtils.removeExtension(archive.getName()));
+		Files.createDirectories(tempDir);
+
+		logManager.getUiLogger().info(localizer.translate("MSG_EXTRACT_TO", tempDir));
+		logManager.getFileLogger().info("Extracting %s to %s", archive.getPath(), tempDir);
+		extractionUtils.extract(archive, tempDir);
 
 		logManager.getUiLogger().info(localizer.translate("MSG_READ_SETUP"));
 		logManager.getFileLogger().info("Reading setup instructions");

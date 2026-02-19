@@ -1,10 +1,6 @@
 package de.tosox.zonerelay.downloader;
 
 import de.tosox.zonerelay.logging.Logger;
-import de.tosox.zonerelay.model.ConfigEntry;
-import de.tosox.zonerelay.model.Mod;
-import de.tosox.zonerelay.resolver.UrlResolver;
-import de.tosox.zonerelay.resolver.UrlResolverFactory;
 import de.tosox.zonerelay.util.ProgressInputStream;
 import de.tosox.zonerelay.util.ProgressListener;
 import okhttp3.OkHttpClient;
@@ -15,37 +11,21 @@ import okhttp3.ResponseBody;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Path;
 
 public class UrlDownloader implements DownloadStrategy {
 	private static final OkHttpClient CLIENT = new OkHttpClient();
 	private static final String USER_AGENT = "Mozilla/5.0 (X11; Linux i686; rv:57.0) Gecko/20100101 Firefox/57.0";
 
 	private final Logger logger;
-	private final UrlResolverFactory urlResolverFactory;
-	private final DownloadFilenameResolver filenameResolver;
 
-	public UrlDownloader(Logger logger, UrlResolverFactory urlResolverFactory,
-	                     DownloadFilenameResolver filenameResolver) {
+	public UrlDownloader(Logger logger) {
 		this.logger = logger;
-		this.urlResolverFactory = urlResolverFactory;
-		this.filenameResolver = filenameResolver;
 	}
 
 	@Override
-	public File download(ConfigEntry entry, Path destination, ProgressListener listener) throws Exception {
-		if (!(entry instanceof Mod mod)) {
-			throw new IllegalArgumentException("Expected Mod, got " + entry.getClass().getSimpleName());
-		}
-
-		UrlResolver resolver = urlResolverFactory.getResolver(mod.getUrl());
-		String directUrl = resolver.resolve(mod.getUrl());
-
-		String filename = filenameResolver.resolve(directUrl);
-		File archive = destination.resolve(filename).toFile();
-
+	public File download(String resolvedUrl, File archive, ProgressListener listener) throws Exception {
 		Request request = new Request.Builder()
-				.url(directUrl)
+				.url(resolvedUrl)
 				.header("User-Agent", USER_AGENT)
 				.build();
 
@@ -55,12 +35,8 @@ public class UrlDownloader implements DownloadStrategy {
 			}
 
 			ResponseBody body = response.body();
-			if (body == null) {
-				throw new IOException("Empty response body");
-			}
-
 			try (ProgressInputStream inputStream = new ProgressInputStream(body.byteStream(), body.contentLength(), listener);
-			     FileOutputStream outputStream = new FileOutputStream(archive)) {
+			    FileOutputStream outputStream = new FileOutputStream(archive)) {
 				byte[] buffer = new byte[8192];
 				int bytesRead;
 				while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -69,6 +45,7 @@ public class UrlDownloader implements DownloadStrategy {
 			}
 		}
 
+		logger.info("Downloaded to %s", archive.getPath());
 		return archive;
 	}
 }
