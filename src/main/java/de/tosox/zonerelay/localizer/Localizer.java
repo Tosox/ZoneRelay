@@ -1,63 +1,57 @@
 package de.tosox.zonerelay.localizer;
 
-import de.tosox.zonerelay.handler.CrashHandler;
-import de.tosox.zonerelay.logger.Logger;
-import de.tosox.zonerelay.utils.Globals;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.tosox.zonerelay.AppConfig;
+import de.tosox.zonerelay.logging.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Localizer {
-    private final Logger logger = Logger.getInstance();
+	private final Map<String, String> messages = new HashMap<>();
+	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final Logger logger;
 
-    private final JSONObject translations;
+	public Localizer(String languageCode, Logger logger) throws IOException {
+		this.logger = logger;
+		loadLocale(Path.of(AppConfig.LOCALES_DIRECTORY), languageCode);
+	}
 
-    public Localizer(Localizer.Language language) {
-        translations = getLocalizationFileContents(language.getLanguageCode());
-    }
+	private void loadLocale(Path localeDir, String languageCode) throws IOException {
+		Path filePath = localeDir.resolve(languageCode + ".json");
+		if (!Files.exists(filePath)) {
+			throw new IOException("Localization file not found: " + filePath);
+		}
 
-    public String translate(String id, Object... args) {
-        try {
-            return String.format(translations.getString(id), args);
-        } catch (JSONException e) {
-            logger.warn("No valid translation for '%s'", id);
-            return id;
-        } catch (IllegalArgumentException e) {
-            logger.warn("Unable to format string for '%s' with '%s'", id, Arrays.toString(args));
-            return id;
-        }
-    }
+		try {
+			Map<String, String> loaded = objectMapper.readValue(filePath.toFile(), new TypeReference<>() {});
+			messages.clear();
+			messages.putAll(loaded);
+		} catch (IOException e) {
+			throw new IOException("Failed to load locale file: " + filePath, e);
+		}
+	}
 
-    private JSONObject getLocalizationFileContents(String langcode) {
-        try {
-            String path = String.format("%s/%s.json", Globals.DIR_LOCALES, langcode);
-            List<String> lines = Files.readAllLines(Path.of(path));
-            return new JSONObject(String.join("", lines));
-        } catch (IOException e) {
-            CrashHandler.showErrorDialog("Unable to find localization for '%s':%n%s", langcode, e);
-            throw new RuntimeException(String.format("Unable to find localization for '%s'", langcode), e);
-        } catch (JSONException e) {
-            CrashHandler.showErrorDialog("Unable to parse the contents of localization '%s':%n%s", langcode, e);
-            throw new RuntimeException(String.format("Unable to parse the contents of localization '%s'", langcode), e);
-        }
-    }
-
-    public enum Language {
-        EN_US("en-US");
-
-        private final String languageCode;
-
-        Language(String languageCode) {
-            this.languageCode = languageCode;
-        }
-
-        public String getLanguageCode() {
-            return languageCode;
-        }
-    }
+	public String translate(String key, Object... args) {
+		String message = messages.get(key);
+		if (message == null) {
+			logger.warn("No valid translation for '%s'", key);
+			return key;
+		}
+		try {
+			if (args.length == 0) {
+				return message;
+			}
+			return MessageFormat.format(message, args);
+		} catch (IllegalArgumentException e) {
+			logger.warn("Unable to format string for '%s' with '%s'", key, Arrays.toString(args));
+			return key;
+		}
+	}
 }
